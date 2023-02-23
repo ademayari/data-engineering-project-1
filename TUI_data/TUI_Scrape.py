@@ -9,9 +9,9 @@ from selenium.webdriver.support import expected_conditions as EC
 # from webdriver_manager.chrome import ChromeDriverManager 
 import json
 
-PATH = "C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe"
+PATH = "C:/School/Dataengineeringproject/chromedriver_win32/chromedriver.exe"
 
-url = "http://www.tuifly.be/flight/nl/search?flyingFrom%5B%5D=OST&flyingTo%5B%5D=HER&depDate=2023-05-05&adults=1&children=0&childAge=&choiceSearch=true&searchType=pricegrid&nearByAirports=true&currency=EUR&isOneWay=true"
+url = "https://www.tuifly.be/flight/nl/search?flyingFrom%5B%5D=BRU&flyingTo%5B%5D=AGP&depDate=2023-04-07&adults=1&children=0&childAge=&choiceSearch=true&searchType=pricegrid&nearByAirports=true&currency=EUR&isOneWay=true&returnDate=2023-04-14"
 
 
 options = webdriver.ChromeOptions()
@@ -34,3 +34,20 @@ element = WebDriverWait(driver, 50).until(
 result = element.get_attribute('innerHTML')
 
 print(result)
+
+#print result into json file
+
+
+
+
+#get departureAirportNames departureDate currentPrice from the csv file
+
+
+#driver.quit()
+
+
+
+
+    
+
+    
