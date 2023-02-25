@@ -28,8 +28,6 @@ luchthaven = ["BRU", "CRL"]
     
 
 
-
-
 page = requests.get(ONE_WAY_URL)
 
 soup = BeautifulSoup(page.content, "lxml")
