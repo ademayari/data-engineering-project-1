@@ -1,0 +1,53 @@
+Departure Airport Name,Departure Airport Code,Arrival Airport Name,Arrival Airport Code,Price, Data_scraped
+
+
+
+Brussel,BRU,Alicante,ALC,�164.99,2023-02-27 22:02:36
+Brussel,BRU,Ibiza,IBZ,,2023-02-27 22:03:02
+Brussel,BRU,Malaga,AGP,�169.99,2023-02-27 22:03:29
+Brussel,BRU,Palma de Mallorca,PMI,�174.99,2023-02-27 22:03:55
+Brussel,BRU,Tenerife,TFS,�224.99,2023-02-27 22:04:21
+Brussel,BRU,Brindisi,BDS,,2023-02-27 22:04:48
+Brussel,BRU,Napels,NAP,,2023-02-27 22:05:14
+Brussel,BRU,Palermo,PMO,,2023-02-27 22:05:40
+Brussel,BRU,Faro,FAO,,2023-02-27 22:06:07
+Brussel,BRU,Kreta-Heraklion,HER,,2023-02-27 22:06:33
+Brussel,BRU,Rhodos,RHO,,2023-02-27 22:06:59
+Brussel,BRU,Corfu,CFU,,2023-02-27 22:07:26
+Charleroi,CRL,Alicante,ALC,�164.99,2023-02-27 22:07:52
+Brussel,BRU,Alicante,ALC,�164.99,2023-02-27 22:08:36
+Brussel,BRU,Ibiza,IBZ,,2023-02-27 22:11:02
+Brussel,BRU,Malaga,AGP,�169.99,2023-02-27 22:11:14
+Brussel,BRU,Palma de Mallorca,PMI,�174.99,2023-02-27 22:11:26
+Brussel,BRU,Tenerife,TFS,�224.99,2023-02-27 22:11:37
+Brussel,BRU,Brindisi,BDS,,2023-02-27 22:11:48
+Brussel,BRU,Napels,NAP,,2023-02-27 22:11:59
+Brussel,BRU,Palermo,PMO,,2023-02-27 22:12:10
+Brussel,BRU,Faro,FAO,,2023-02-27 22:12:22
+Brussel,BRU,Kreta-Heraklion,HER,,2023-02-27 22:12:34
+Brussel,BRU,Rhodos,RHO,,2023-02-27 22:12:45
+Brussel,BRU,Corfu,CFU,,2023-02-27 22:12:56
+Charleroi,CRL,Alicante,ALC,�164.99,2023-02-27 22:13:07
+Charleroi,CRL,Ibiza,IBZ,,2023-02-27 22:13:18
+Charleroi,CRL,Malaga,AGP,�169.99,2023-02-27 22:13:30
+Charleroi,CRL,Palma de Mallorca,PMI,�174.99,2023-02-27 22:13:41
+Charleroi,CRL,Tenerife,TFS,�224.99,2023-02-27 22:13:52
+Charleroi,CRL,Brindisi,BDS,,2023-02-27 22:14:03
+Charleroi,CRL,Napels,NAP,,2023-02-27 22:14:15
+Charleroi,CRL,Palermo,PMO,,2023-02-27 22:14:26
+Charleroi,CRL,Faro,FAO,,2023-02-27 22:14:37
+Charleroi,CRL,Kreta-Heraklion,HER,,2023-02-27 22:14:48
+Charleroi,CRL,Rhodos,RHO,,2023-02-27 22:15:00
+Charleroi,CRL,Corfu,CFU,,2023-02-27 22:15:11
+Brugge-Oostende,OST,Alicante,ALC,�164.99,2023-02-27 22:15:22
+Brugge-Oostende,OST,Ibiza,IBZ,,2023-02-27 22:15:34
+Brugge-Oostende,OST,Malaga,AGP,�169.99,2023-02-27 22:15:45
+Brugge-Oostende,OST,Palma de Mallorca,PMI,�174.99,2023-02-27 22:15:56
+Brugge-Oostende,OST,Tenerife,TFS,�224.99,2023-02-27 22:16:07
+Brugge-Oostende,OST,Brindisi,BDS,,2023-02-27 22:16:18
+Brugge-Oostende,OST,Napels,NAP,,2023-02-27 22:16:30
+Brugge-Oostende,OST,Palermo,PMO,,2023-02-27 22:16:41
+Brugge-Oostende,OST,Faro,FAO,,2023-02-27 22:16:52
+Brugge-Oostende,OST,Kreta-Heraklion,HER,,2023-02-27 22:17:03
+Brugge-Oostende,OST,Rhodos,RHO,,2023-02-27 22:17:15
+Brugge-Oostende,OST,Corfu,CFU,,2023-02-27 22:17:26
