@@ -17,14 +17,8 @@ luchthaven = ["BRU", "CRL"]
 list_of_destinations = spanje + italie + portugal + griekenland 
 
 
-
-
 # store only the current date in variable datenow
 datenow = datetime.now().strftime("%Y-%m-%d")
-
-
-
-
 
 
 # change desitination code in URL 
