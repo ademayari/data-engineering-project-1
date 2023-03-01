@@ -29,7 +29,7 @@ for i in list_of_destinations:
     
 
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-08")
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", datenow)
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
@@ -58,7 +58,7 @@ for i in list_of_destinations:
         
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
     NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("BRU", "CRL")
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-08")
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", datenow)
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
