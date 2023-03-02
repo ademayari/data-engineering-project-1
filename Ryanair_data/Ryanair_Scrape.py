@@ -37,13 +37,11 @@ for i in list_of_destinations:
     # convert string to  object
     json_object = json.loads(result)
 
-    # get columns originName, destinationName, dateOut, amount from the json object by using the json object 
+    # get columns originName, destinationName, dateOut, amount from the json object
     print("Destination: ", json_object["trips"][0]["destinationName"])
     print("Date Out: ",  json_object["trips"][0]["dates"][0]["dateOut"])
 
-    # if there is no flight available, the json object will not have the key "flights"
     # check if the key "flights" is in the json object and check if the list is not empty
-
     if json_object["trips"][0]["dates"][0]["flights"] != []:
         print("Flight: ",  json_object["trips"][0]["dates"][0]["flights"][0]["flightNumber"])
         print("Value: ",  json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"])
@@ -66,14 +64,13 @@ for i in list_of_destinations:
     # convert string to  object
     json_object = json.loads(result)
 
-    # get columns originName, destinationName, dateOut, amount from the json object by using the json object 
+    # get columns originName, destinationName, dateOut, amount from the json object 
     print("Origin: ", json_object["trips"][0]["originName"])
     print("Destination: ", json_object["trips"][0]["destinationName"])
     print("Date Out: ",  json_object["trips"][0]["dates"][0]["dateOut"])
 
-    # if there is no flight available, the json object will not have the key "flights"
-    # check if the key "flights" is in the json object and check if the list is not empty
 
+    # check if the key "flights" is in the json object and check if the list is not empty
     if json_object["trips"][0]["dates"][0]["flights"] != []:
         print("Flight: ",  json_object["trips"][0]["dates"][0]["flights"][0]["flightNumber"])
         print("Value: ",  json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"])
