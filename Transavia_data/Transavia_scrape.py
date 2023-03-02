@@ -1,26 +1,27 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 import os
-import itertools
+from datetime import datetime
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 URL = "https://www.transavia.com/nl-BE/home/"
 
 abs_path = os.path.dirname(__file__)
 PATH = os.path.join(abs_path, "../dependencies/chromedriver")
 
-options = webdriver.ChromeOptions()
-# options.headless = True
-
-driver = webdriver.Chrome(PATH, options=options)
-
-FROM = "Brussel"
+FROM = "BRU"
 
 DESTINATIONS = {
-    "spain": "alicante,ibiza,malaga,palma,tenerife".split(","),
-    "portugal": ["faro"],
-    "italy": "brindisi,napels,palermo".split(","),
-    "greece": "corfu,kreta,rhodos".split(",")
+    "spain": "ALC,IBZ,AGP,PMI,TFS".split(","),
+    "portugal": ["FAO"],
+    "italy": "BDS,NAP,PMO".split(","),
+    "greece": "HER,RHO,CFU".split(",")
 }
+
+TEMP_DATE = "30-05-2023"
 
 # FROM: Brussels
 # TO: x
@@ -28,7 +29,7 @@ DESTINATIONS = {
 # people: 1 adult
 # deselect return flight
 
-def setDeparture(driver: webdriver.Chrome, departure = "BRU"):
+def set_departure(driver: webdriver.Chrome, departure = "BRU"):
     hidden_departure_input = driver.find_element(By.NAME, "routeSelection.DepartureStation")
     hidden_departure_input.send_keys(departure)
 
@@ -40,9 +41,28 @@ def set_one_way(driver: webdriver.Chrome):
     is_return_flight_input = driver.find_element(By.ID, "dateSelection.isReturnFlight")
     if is_return_flight_input.is_selected(): is_return_flight_input.click()
 
+def set_date(driver: webdriver.Chrome, date):
+    date_input = driver.find_element(By.ID, "dateSelection_OutboundDate-datepicker")
+    date_input.send_keys(date)
+
+def submit_form(driver: webdriver.Chrome):
+    form = driver.find_element(By.ID, "desktop")
+    form.submit()
+
+def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
+    set_departure(driver)
+    set_destination(driver, to)
+    set_one_way(driver)
+    set_date(driver, date)
+    submit_form(driver)
+
+
+
 def main():
-    for city in itertools.chain(*DESTINATIONS.values()):
-        pass
+    # for city in itertools.chain(*DESTINATIONS.values()):
+    #     scrape_price
+    driver.get(URL)
+    scrape_price(driver, 'IBZ')
 
 if __name__ == "__main__":
     main()
