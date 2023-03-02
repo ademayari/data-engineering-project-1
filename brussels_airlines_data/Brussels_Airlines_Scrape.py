@@ -2,12 +2,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
+from selenium.webdriver.chrome.service import Service
+
 import os
 from time import sleep
 
 abs_path = os.path.dirname(__file__)
-PATH = os.path.join(abs_path, "../dependencies/chromedriver")
+PATH = os.path.join(abs_path, "../dependencies/chromedriver_windows")
 URL = 'https://www.brusselsairlines.com/lhg/be/nl/o-d/cy-cy/brussel-'
+#service = Service(PATH)
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option("detach", True)
