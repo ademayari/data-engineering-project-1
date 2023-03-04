@@ -8,7 +8,7 @@ ONE_WAY_URL = "https://www.ryanair.com/api/booking/v4/nl-nl/availability?ADT=1&C
 
 
 
-spanje = ["ALC", "IBZ", "AGP", "PMI"]
+spanje = ["ALC", "IBZ", "AGP", "PMI", "TFS"]
 italie = ["BDS", "NAP", "PMO"]
 portugal = ["FAO"]
 griekenland = ["HER", "RHO","CFU"]
@@ -21,7 +21,7 @@ list_of_destinations = spanje + italie + portugal + griekenland
 datenow = datetime.now().strftime("%Y-%m-%d")
 
 
-print("#################################### BRUSSEL ####################################")
+print("#################################### VANUIT BRUSSEL ####################################")
 
 
 # change desitination code in URL 
@@ -29,7 +29,7 @@ for i in list_of_destinations:
     
 
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", datenow)
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-09")
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
@@ -47,16 +47,17 @@ for i in list_of_destinations:
         print("Value: ",  json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"])
     else:
         print("No flight available")
+    print(" ----------------------- Vlucht naar --------------------------------------", json_object["trips"][0]["destinationName"])
 
 
-print("#################################### CHARLEROI ####################################")
+print("#################################### VANUIT CHARLEROI ####################################")
 
 # change the destination code in the URL and the origin code in the URL
 for i in list_of_destinations:
         
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
     NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("BRU", "CRL")
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", datenow)
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-09")
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
@@ -76,7 +77,7 @@ for i in list_of_destinations:
         print("Value: ",  json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"])
     else:
         print("No flight available")
-
+    print(" ----------------------- Vlucht naar --------------------------------------", json_object["trips"][0]["destinationName"])
 
 
 

@@ -1,11 +1,29 @@
 Departure Airport Name,Departure Airport Code,Arrival Airport Name,Arrival Airport Code,Price, Data_scraped
 
-Brussel,BRU,Alicante,ALC,€164.99,2023-02-28 17:52:01
-Brussel,BRU,Ibiza,IBZ,,2023-02-28 17:52:28
-Brussel,BRU,Malaga,AGP,€164.99,2023-02-28 17:52:54
-Brussel,BRU,Palma de Mallorca,PMI,€174.99,2023-02-28 17:53:21
-Brussel,BRU,Alicante,ALC,€164.99,2023-02-28 17:53:56
-Brussel,BRU,Ibiza,IBZ,,2023-02-28 17:54:08
-Brussel,BRU,Malaga,AGP,€164.99,2023-02-28 17:54:19
-Brussel,BRU,Palma de Mallorca,PMI,€174.99,2023-02-28 17:54:30
-Brussel,BRU,Tenerife,TFS,€224.99,2023-02-28 17:54:42
+
+Brussel,BRU,Alicante,ALC,ï¿½169.99,2u 45m,2023-03-02 14:47:31
+Brussel,BRU,Ibiza,IBZ,,4u 10m,2023-03-02 14:47:43
+Brussel,BRU,Malaga,AGP,ï¿½169.99,3u 5m,2023-03-02 14:47:55
+Brussel,BRU,Palma de Mallorca,PMI,ï¿½329.99,2u 35m,2023-03-02 14:48:06
+Brussel,BRU,Tenerife,TFS,ï¿½299.99,5u 0m,2023-03-02 14:48:18
+Brussel,BRU,Alicante,ALC,ï¿½169.99,2u 45m,2023-03-02 14:57:44
+Brussel,BRU,Ibiza,IBZ,,4u 10m,2023-03-02 14:57:56
+Brussel,BRU,Malaga,AGP,ï¿½169.99,3u 5m,2023-03-02 14:58:08
+Brussel,BRU,Alicante,ALC,ï¿½169.99,2u 45m,2023-03-02 14:58:42
+Brussel,BRU,Ibiza,IBZ,,4u 10m,2023-03-02 14:58:54
+Brussel,BRU,Malaga,AGP,ï¿½169.99,3u 5m,2023-03-02 14:59:06
+Brussel,BRU,Palma de Mallorca,PMI,ï¿½329.99,2u 35m,2023-03-02 14:59:18
+Brussel,BRU,Tenerife,TFS,ï¿½299.99,5u 0m,2023-03-02 14:59:29
+Brussel,BRU,Alicante,ALC,ï¿½169.99,2u 45m,2023-03-02 15:34:18
+Brussel,BRU,Ibiza,IBZ,,4u 10m,2023-03-02 15:34:30
+Brussel,BRU,Malaga,AGP,ï¿½169.99,3u 5m,2023-03-02 15:34:41
+Brussel,BRU,Palma de Mallorca,PMI,ï¿½329.99,2u 35m,2023-03-02 15:34:52
+Brussel,BRU,Tenerife,TFS,ï¿½299.99,5u 0m,2023-03-02 15:35:04
+Brussel,BRU,Alicante,ALC,169.99,2u 45m,2023-03-02 16:04:15
+Brussel,BRU,Ibiza,IBZ,179.99,4u 10m,2023-03-02 16:04:27
+Brussel,BRU,Malaga,AGP,154.99,3u 5m,2023-03-02 16:04:38
+Brussel,BRU,Palma de Mallorca,PMI,149.99,2u 35m,2023-03-02 16:04:50
+Brussel,BRU,Tenerife,TFS,319.99,5u 0m,2023-03-02 16:05:01
+Brussel,BRU,Alicante,ALC,169.99,2u 45m,2023-03-02 16:23:28
+Brussel,BRU,Ibiza,IBZ,179.99,4u 10m,2023-03-02 16:23:40
+Brussel,BRU,Malaga,AGP,154.99,3u 5m,2023-03-02 16:23:51
