@@ -3,86 +3,107 @@ import datetime
 
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium import webdriver
 from datetime import date
 from time import sleep
-from config import URL
-
-def set_date(driver, month, day):
-  # Reset departure date
-  driver.find_element(By.CSS_SELECTOR, "[formcontrolname='departureDate1']").click()
-  driver.find_element(By.CSS_SELECTOR, "[class='resetButton']").click()
-  driver.find_element(By.CSS_SELECTOR, "[class='closeBtn ng-star-inserted']").click()
-  sleep(1) # TODO find a way to remove the sleep here
-  
-  # Set date
-  driver.find_element(By.CSS_SELECTOR, "[formcontrolname='departureDate1']").click()
-
-  date_found = False  
-  while not date_found:
-    driver.find_element(By.CSS_SELECTOR, "[aria-label='Volgende maand']").click()
-    
-    try:
-      driver.find_element("xpath", f"// h5[contains(text(),\'{month} 2023')]")
-      date_found = True
-    except NoSuchElementException:
-      date_found = False
-    
-  driver.find_element(By.CLASS_NAME, f"day{day}").click()
+from config import *
+from scrape_elements import *
+from selenium_helpers import *
   
 def extract_flight_data(flights):
   extracted_data = []
   
   for flight in flights:
-    if not operated_by_brussels_airlines(flight):
-      continue
-    
-    try:
-      flight.find_element("xpath", "// span[contains(text(),\' niet beschikbaar ')]")
-    except NoSuchElementException:
-      flight_time = flight.find_element(By.CLASS_NAME, "time").text
-      flight_price = flight.find_element(By.CLASS_NAME, "cabinPrice").text
-      num_stops = flight.find_element(By.CSS_SELECTOR, "[class='nbStops ng-star-inserted']").text
-      
-      extracted_data.append((flight_time, flight_price, num_stops))
+    if operated_by_brussels_airlines(flight) and flight_available(flight):
+      extracted_data.append({ 
+        flight_time: flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_time_class).text, 
+        flight_price: flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_price_class).text, 
+        num_stops: flight.find_element(By.CSS_SELECTOR, EXTRACT_FLIGHTS.num_stops_class).text
+      })
     
   return extracted_data
 
 def operated_by_brussels_airlines(flight):
   try:
-    flight.find_element("xpath", "// div[contains(text(),\'Brussels Airlines')]")
+    find_by_xpath(EXTRACT_FLIGHTS.by_brussels_airlines)
+    return True
   except NoSuchElementException:
     return False
-  return True
 
-def navigate_portal(driver):
-  driver.get(URL + 'alicante')
+def flight_available(flight):
+  try:
+    find_by_xpath(EXTRACT_FLIGHTS.flight_unavailable)
+    return True
+  except NoSuchElementException:
+    return False
+
+def navigate_portal():
+  driver.get(URL)
   sleep(3)
-  driver.find_element("xpath", "// button[contains(text(),\'Akkoord')]").click()
-  driver.find_element("xpath", "// a[contains(text(),\' Vluchten vinden ')]").click()
-  sleep(20)
+  click_by_xpath(PORTAL.confirm_button)
+  click_by_xpath(PORTAL.nav_flights_button)
+  check_rate_limit()
   
-def set_initial_query(driver):
-  driver.find_element("xpath", "// span[contains(text(),\'Meer reisgegevens')]").click()
-  driver.find_element("xpath", "// span[contains(text(),\'Enkele reis')]").click()
+def set_extra_options():
+  click_by_xpath(extra_options_button)
   
-def execute_search(driver):
-  driver.find_element("xpath", "// span[contains(text(),\'Start nieuwe zoekopdracht')]").click()
+def set_single_flight():
+  click_by_xpath(single_flight_button)
+  
+def set_destination(country, city, airport):
+  ELEMENTS = SET_DESTINATION(country, city, airport)
+  
+  sleep(3)
+  click_by_css(ELEMENTS.input_button)
+  
+  try:
+    click_by_css(ELEMENTS.country_button)
+  except NoSuchElementException:
+    click_by_xpath("// span[contains(text(),'Sluiten')]")
+    sleep(3)
+    click_by_css(ELEMENTS.input_button)
+    click_by_css(ELEMENTS.country_button)
+    
+  click_by_css(ELEMENTS.city_button)
+  if airport:
+    click_by_css(ELEMENTS.airport_button) 
+  click_by_css(ELEMENTS.confirm_button)
+  
+def set_date(month, day):
+  ELEMENTS = SET_DATE(month, day)
+  
+  # Set departure date
+  click_by_css(ELEMENTS.input_elem)
+  click_by_css(ELEMENTS.reset_button)
+  click_by_css(ELEMENTS.close_button)
+  sleep(1) # TODO find a way to remove the sleep here
+  click_by_css(ELEMENTS.input_elem)
+
+  found_date = False
+  while not found_date:
+    try:
+      find_by_xpath(ELEMENTS.month_header)
+      found_date = True
+    except NoSuchElementException:
+      click_by_css(ELEMENTS.next_month_button)
+
+  element = find_by_xpath(ELEMENTS.day_button)
+  webdriver.ActionChains(driver).move_to_element(element).click(element).perform()
+  
+def execute_search():
+  click_by_xpath(SEARCH_BUTTON())
   sleep(5)
   
 def get_current_month():
   month_number = date.today().month
-  return calendar.month_name[month_number]
+  return calendar.month_name[month_number].lower()
 
 def get_day(increment=0):
   date = datetime.datetime.today()
-  print(date.day)
-  
   for i in range(increment): 
     date += datetime.timedelta(days=1)
-    print(date.day)
-
   return date.day
 
-
-  
-  
+def check_rate_limit():
+  if driver.title == TITLES.RATE_LIMIT:
+    sleep(20)
