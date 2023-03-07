@@ -2,7 +2,7 @@ from config import driver
 from selenium.webdriver.common.by import By
 
 def click_by_css(element):
-  elem = driver.find_element(By.CSS_SELECTOR, element).click()
+  return driver.find_element(By.CSS_SELECTOR, element).click()
 
 def find_by_css(element):
   return driver.find_element(By.CSS_SELECTOR, element)
