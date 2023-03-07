@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
+import csv
 
 
 ONE_WAY_URL = "https://www.ryanair.com/api/booking/v4/nl-nl/availability?ADT=1&CHD=0&DateIn=2023-03-14&DateOut=2023-03-02&Destination=AGP&Disc=0&INF=0&Origin=BRU&TEEN=0&IncludeConnectingFlights=true&RoundTrip=false&ToUs=AGREED"
@@ -29,26 +30,32 @@ for i in list_of_destinations:
     
 
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-09")
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-14")
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
 
     # convert string to  object
     json_object = json.loads(result)
-
-    # get columns originName, destinationName, dateOut, amount from the json object
-    print("Destination: ", json_object["trips"][0]["destinationName"])
-    print("Date Out: ",  json_object["trips"][0]["dates"][0]["dateOut"])
-
-    # check if the key "flights" is in the json object and check if the list is not empty
+    
+    # get columns originName, destinationName, dateOut, value, flightDuration, faresLeft and flightKey from the json object and add them to ryanair.csv
     if json_object["trips"][0]["dates"][0]["flights"] != []:
-        print("Flight: ",  json_object["trips"][0]["dates"][0]["flights"][0]["flightNumber"])
-        print("Value: ",  json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"])
-    else:
-        print("No flight available")
-    print(" ----------------------- Vlucht naar --------------------------------------", json_object["trips"][0]["destinationName"])
+        originName = json_object["trips"][0]["originName"]
+        destinationName = json_object["trips"][0]["destinationName"]
+        dateOut = json_object["trips"][0]["dates"][0]["dateOut"]
+        value = json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"]
+        flightDuration = json_object["trips"][0]["dates"][0]["flights"][0]["segments"][0]["duration"]
+        faresLeft = json_object["trips"][0]["dates"][0]["flights"][0]["faresLeft"]
+        flightKey = json_object["trips"][0]["dates"][0]["flights"][0]["flightKey"]
 
+        # use a csv writer to write the data to a csv file
+
+        with open('ryanair_data/ryanair.csv', "a", newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            # add empty row 
+            csv_writer.writerow([])
+            csv_writer.writerow([originName, destinationName, dateOut, value, flightDuration, faresLeft, flightKey])      
+    
 
 print("#################################### VANUIT CHARLEROI ####################################")
 
@@ -57,27 +64,25 @@ for i in list_of_destinations:
         
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
     NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("BRU", "CRL")
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-09")
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-14")
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
 
     # convert string to  object
     json_object = json.loads(result)
-
-    # get columns originName, destinationName, dateOut, amount from the json object 
-    print("Origin: ", json_object["trips"][0]["originName"])
-    print("Destination: ", json_object["trips"][0]["destinationName"])
-    print("Date Out: ",  json_object["trips"][0]["dates"][0]["dateOut"])
-
-
-    # check if the key "flights" is in the json object and check if the list is not empty
     if json_object["trips"][0]["dates"][0]["flights"] != []:
-        print("Flight: ",  json_object["trips"][0]["dates"][0]["flights"][0]["flightNumber"])
-        print("Value: ",  json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"])
-    else:
-        print("No flight available")
-    print(" ----------------------- Vlucht naar --------------------------------------", json_object["trips"][0]["destinationName"])
+        originName = json_object["trips"][0]["originName"]
+        destinationName = json_object["trips"][0]["destinationName"]
+        dateOut = json_object["trips"][0]["dates"][0]["dateOut"]
+        value = json_object["trips"][0]["dates"][0]["flights"][0]["regularFare"]["fares"][0]["amount"]
+        flightDuration = json_object["trips"][0]["dates"][0]["flights"][0]["segments"][0]["duration"]
+        faresLeft = json_object["trips"][0]["dates"][0]["flights"][0]["faresLeft"]
+        flightKey = json_object["trips"][0]["dates"][0]["flights"][0]["flightKey"]
 
 
-
+        with open('ryanair_data/ryanair.csv', "a", newline='') as csv_file:
+            csv_writer = csv.writer(csv_file)
+            # add empty row 
+            csv_writer.writerow([])
+            csv_writer.writerow([originName, destinationName, dateOut, value, flightDuration, faresLeft, flightKey])    
