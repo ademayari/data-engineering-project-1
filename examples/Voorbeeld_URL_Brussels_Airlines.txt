@@ -1,1 +1,0 @@
-url = "https://www.brusselsairlines.com/lhg/be/nl/o-d/cy-cy/brussel-malaga"
