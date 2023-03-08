@@ -16,9 +16,9 @@ def extract_flight_data(flights):
   for flight in flights:
     if operated_by_brussels_airlines(flight) and flight_available(flight):
       extracted_data.append({ 
-        flight_time: flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_time_class).text, 
-        flight_price: flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_price_class).text, 
-        num_stops: flight.find_element(By.CSS_SELECTOR, EXTRACT_FLIGHTS.num_stops_class).text
+        'flight_time': flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_time_class).text, 
+        'flight_price': flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_price_class).text, 
+        'num_stops': flight.find_element(By.CSS_SELECTOR, EXTRACT_FLIGHTS.num_stops_class).text
       })
     
   return extracted_data
@@ -33,9 +33,9 @@ def operated_by_brussels_airlines(flight):
 def flight_available(flight):
   try:
     find_by_xpath(EXTRACT_FLIGHTS.flight_unavailable)
-    return True
-  except NoSuchElementException:
     return False
+  except NoSuchElementException:
+    return True
 
 def navigate_portal():
   driver.get(URL)
