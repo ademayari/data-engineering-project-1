@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 departure_codes = ["BRU", "OST", "ANR", "LGG"]
 destination_codes = ["ALC", "IBZ", "AGP", "PMI", "TFS", "BDS", "NAP", "PMO", "FAO", "HER", "RHO", "CFU"]
+dep_date = datetime.now().strftime("%Y-%m-%d")
 
 
 csv_headers = ["departure_airport_name", "departure_airport_code", "destination_airport_name", "destination_airport_code", "price", "departure_date", "flight_duration", "date_scraped"]
@@ -36,7 +37,7 @@ driver.implicitly_wait(10)
 
 for dest_code in destination_codes:
         
-        url = f"https://www.tuifly.be/flight/nl/search?flyingFrom%5B%5D=BRU&flyingTo%5B%5D={dest_code}&depDate=2023-04-07&adults=1&children=0&childAge=&choiceSearch=true&searchType=pricegrid&nearByAirports=true&currency=EUR&isOneWay=true&returnDate=2023-04-14"
+        url = f"https://www.tuifly.be/flight/nl/search?flyingFrom%5B%5D=BRU&flyingTo%5B%5D={dest_code}&depDate={dep_date}&adults=1&children=0&childAge=&choiceSearch=true&searchType=pricegrid&nearByAirports=true&currency=EUR&isOneWay=true&returnDate=2023-04-14"
         driver.get(url)
 
         try:
