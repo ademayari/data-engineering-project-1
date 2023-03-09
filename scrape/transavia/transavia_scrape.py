@@ -5,6 +5,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 import os
 import time
 from datetime import datetime
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait as wait
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
@@ -56,7 +59,7 @@ def submit_form(driver: webdriver.Chrome):
     form.submit()
 
 def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
-    time.sleep(30)
+    time.sleep(10000)
     set_departure(driver)
     set_destination(driver, to)
     set_one_way(driver)
@@ -68,7 +71,38 @@ def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
 def main():
     # for city in itertools.chain(*DESTINATIONS.values()):
     #     scrape_price
+
     driver.get(URL)
+    time.sleep(10)
+
+    main_iframe = driver.find_element(By.ID, "main-iframe")
+    driver.switch_to.frame(main_iframe)
+
+    # navigate to the nested iframe
+    nested_iframe = driver.find_element(By.TAG_NAME, "iframe")
+    driver.switch_to.frame(nested_iframe)
+
+    # wait for the checkbox element to appear
+    checkbox_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "recaptcha-anchor")))
+
+    # click the checkbox element
+    checkbox_element.click()
+
+    time.sleep(3000)
+
+    # swith to iframe
+    # driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="main-iframe"]'))
+    
+    # driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="reCAPTCHA"]'))
+   
+    # element = wait.until(EC.element_to_be_clickable((By.ID, "recaptcha-anchor")))
+    # element.click()
+
+
+
+
+    #driver.find_element(By.ID, "recaptcha-anchor").click()
+
     scrape_price(driver, 'IBZ')
 
 if __name__ == "__main__":
