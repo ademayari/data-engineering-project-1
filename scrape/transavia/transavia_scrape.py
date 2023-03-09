@@ -4,7 +4,10 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import os
 import time
+import sys
 from datetime import datetime
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
@@ -56,7 +59,7 @@ def submit_form(driver: webdriver.Chrome):
     form.submit()
 
 def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
-    time.sleep(30)
+    time.sleep(3000)
     set_departure(driver)
     set_destination(driver, to)
     set_one_way(driver)
@@ -69,6 +72,15 @@ def main():
     # for city in itertools.chain(*DESTINATIONS.values()):
     #     scrape_price
     driver.get(URL)
+    
+    time.sleep(3)
+    parentIframe = WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.XPATH,"//iframe[contains(@id,'main-iframe')]")))
+
+    driver.switch_to.frame(parentIframe)
+
+    driver.find_element(By.XPATH, '//*[@id="recaptcha-anchor"]').click()
+    
     scrape_price(driver, 'IBZ')
 
 if __name__ == "__main__":

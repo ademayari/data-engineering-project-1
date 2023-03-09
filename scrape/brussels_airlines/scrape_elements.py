@@ -1,4 +1,4 @@
-from config import driver
+from utils.selenium_helpers import driver
 from enum import Enum
 
 class dotdict(dict):

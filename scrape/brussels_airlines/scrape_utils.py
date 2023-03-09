@@ -1,14 +1,15 @@
 import calendar
 import datetime
 
+from utils.selenium_helpers import *
+from utils.driver import driver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
 from datetime import date
 from time import sleep
-from config import *
-from scrape_elements import *
-from selenium_helpers import *
+from . config import *
+from . scrape_elements import *
   
 def extract_flight_data(flights):
   extracted_data = []
