@@ -30,7 +30,7 @@ for i in list_of_destinations:
     
 
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-14")
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-21")
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
@@ -50,7 +50,7 @@ for i in list_of_destinations:
 
         # use a csv writer to write the data to a csv file
 
-        with open('ryanair_data/ryanair.csv', "a", newline='') as csv_file:
+        with open('ryanair.csv', "a", newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             # add empty row 
             csv_writer.writerow([])
@@ -64,7 +64,7 @@ for i in list_of_destinations:
         
     NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", i)
     NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("BRU", "CRL")
-    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-14")
+    NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("2023-03-02", "2023-03-21")
     page = requests.get(NEW_ONE_WAY_URL)
     soup = BeautifulSoup(page.content, "lxml")
     result = soup.find("p").text
@@ -81,7 +81,7 @@ for i in list_of_destinations:
         flightKey = json_object["trips"][0]["dates"][0]["flights"][0]["flightKey"]
 
 
-        with open('ryanair_data/ryanair.csv', "a", newline='') as csv_file:
+        with open('ryanair.csv', "a", newline='') as csv_file:
             csv_writer = csv.writer(csv_file)
             # add empty row 
             csv_writer.writerow([])
