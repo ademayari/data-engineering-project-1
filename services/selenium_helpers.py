@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-from utils.driver import driver
+from services.driver import driver
 
 def click_by_css(element):
   return driver.find_element(By.CSS_SELECTOR, element).click()

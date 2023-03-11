@@ -1,11 +1,6 @@
-from utils.selenium_helpers import driver
+from services.selenium_helpers import driver
 from enum import Enum
-
-class dotdict(dict):
-  """dot.notation access to dictionary attributes"""
-  __getattr__ = dict.get
-  __setattr__ = dict.__setitem__
-  __delattr__ = dict.__delitem__
+from services.utils import dotdict
 
 TITLES = dotdict({
   'ADVANCED_SEARCH': 'Brussels Airlines - Uitgebreide zoekopdracht',
@@ -21,11 +16,14 @@ PORTAL = dotdict({
 })
 
 EXTRACT_FLIGHTS = dotdict({
+  'flight_tag': "cont-avail",
   'flight_unavailable': "// span[contains(text(),\' niet beschikbaar ')]",
   'flight_time_class': "time",
   'flight_price_class': "cabinPrice",
-  'num_stops_class': "[class='nbStops ng-star-inserted']",
-  'by_brussels_airlines': "// div[contains(text(),\'Brussels Airlines')]"
+  'flight_stops_class': "segments",
+  'seats_available_class': 'seats',
+  'by_brussels_airlines': "// div[contains(text(),\'Brussels Airlines')]",
+  'flight_number_class': 'flightNumber'
 })
 
 def SET_DESTINATION(country, city, airport):
@@ -48,8 +46,7 @@ def SET_DATE(month, day):
       'reset_button': "[class='resetButton']",
       'close_button': "[class='datepickerCloseButton']",
       'next_month_button': "[class='icon-link-navigation-next iconLinkNavigationNext']",
-      'month_header': f"// span[contains(text(),'{month} 2023')]",
-      'day_button': f"// span[contains(text(),'{day}')]"
+      'day_button': f"// span[contains(text(),'{day}')]",
     })
   
   return dotdict({
@@ -57,8 +54,7 @@ def SET_DATE(month, day):
     'reset_button': "[class='resetButton']",
     'close_button': "[class='closeBtn ng-star-inserted']",
     'next_month_button': "[aria-label='Volgende maand']",
-    'month_header': f"// h5[contains(text(),'{month} 2023')]",
-    'day_button': f"// div[contains(text(),'{day}')]"
+    'day_button': f"// div[contains(text(),'{day}')]",
   })
 
 def SEARCH_BUTTON():

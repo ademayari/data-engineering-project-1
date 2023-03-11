@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 selenium = "~=4.8.2"
+undetected-chromedriver = "*"
+pandas = "*"
 
 [dev-packages]
 

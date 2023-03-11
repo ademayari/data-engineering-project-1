@@ -1,35 +1,56 @@
-import calendar
 import datetime
 
-from utils.selenium_helpers import *
-from utils.driver import driver
+from services.selenium_helpers import *
+from services.driver import driver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
-from datetime import date
 from time import sleep
 from . config import *
 from . scrape_elements import *
   
-def extract_flight_data(flights):
+def extract_flight_data():
+  flights = driver.find_elements(By.TAG_NAME, EXTRACT_FLIGHTS.flight_tag)
   extracted_data = []
   
   for flight in flights:
     if operated_by_brussels_airlines(flight) and flight_available(flight):
       extracted_data.append({ 
-        'flight_time': flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_time_class).text, 
+        'departure_time': flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_time_class).text, 
         'flight_price': flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_price_class).text, 
-        'num_stops': flight.find_element(By.CSS_SELECTOR, EXTRACT_FLIGHTS.num_stops_class).text
+        'stops': extract_stops(flight),
+        'flight_numbers': extract_flight_numbers(flight),
+        'num_seats_available': extract_seats(flight)
       })
     
   return extracted_data
 
-def operated_by_brussels_airlines(flight):
+def extract_stops(flight):
+  stops = flight.find_element(By.CLASS_NAME, 'segments').find_elements(By.TAG_NAME, 'span')
+  extracted_stops = []
+  for stop in stops:
+    extracted_stops.append(stop.text)
+  return extracted_stops
+
+def extract_flight_numbers(flight):
+  flight_numbers = flight.find_elements(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_number_class)
+  extracted_flight_numbers = []
+  for flight_number in flight_numbers:
+    extracted_flight_numbers.append(flight_number.text)
+  return extracted_flight_numbers
+
+def extract_seats(flight):
   try:
-    find_by_xpath(EXTRACT_FLIGHTS.by_brussels_airlines)
-    return True
+    seats_available = flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.seats_available_class).text
+    return seats_available.split(' ')[0]
   except NoSuchElementException:
-    return False
+    return 'NULL'
+
+def operated_by_brussels_airlines(flight):
+  for name in flight.find_elements(By.CLASS_NAME, "airlineName"):
+    if (name.text in ["Brussels Airlines", 'Lufthansa']):
+      return True
+  return False
 
 def flight_available(flight):
   try:
@@ -80,13 +101,9 @@ def set_date(month, day):
   sleep(1) # TODO find a way to remove the sleep here
   click_by_css(ELEMENTS.input_elem)
 
-  found_date = False
-  while not found_date:
-    try:
-      find_by_xpath(ELEMENTS.month_header)
-      found_date = True
-    except NoSuchElementException:
-      click_by_css(ELEMENTS.next_month_button)
+  # Set month
+  for i in range(month - datetime.datetime.now().month):
+    click_by_css(ELEMENTS.next_month_button)
 
   element = find_by_xpath(ELEMENTS.day_button)
   webdriver.ActionChains(driver).move_to_element(element).click(element).perform()
@@ -94,16 +111,6 @@ def set_date(month, day):
 def execute_search():
   click_by_xpath(SEARCH_BUTTON())
   sleep(5)
-  
-def get_current_month():
-  month_number = date.today().month
-  return calendar.month_name[month_number].lower()
-
-def get_day(increment=0):
-  date = datetime.datetime.today()
-  for i in range(increment): 
-    date += datetime.timedelta(days=1)
-  return date.day
 
 def check_rate_limit():
   if driver.title == TITLES.RATE_LIMIT:
