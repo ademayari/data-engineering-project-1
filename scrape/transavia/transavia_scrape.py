@@ -8,10 +8,7 @@ import time
 import sys
 from datetime import datetime
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait as wait
-from gmail import login_gmail
-from captcha import captcha_present
-import itertools
+from selenium.webdriver.support.ui import WebDriverWait as wait
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
