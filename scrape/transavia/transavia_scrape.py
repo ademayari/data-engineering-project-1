@@ -8,7 +8,15 @@ import time
 import sys
 from datetime import datetime
 from selenium.webdriver.support import expected_conditions as EC
+<<<<<<< HEAD
 from selenium.webdriver.support.ui import WebDriverWait as wait
+=======
+from selenium.webdriver.support.wait import WebDriverWait as wait
+from gmail import login_gmail
+from captcha import captcha_present
+from gmail import *
+import itertools
+>>>>>>> d302c73 (transavia magic)
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
@@ -84,9 +92,13 @@ def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
 def main():
     # for city in itertools.chain(*DESTINATIONS.values()):
     #     scrape_price
+    
+    login_gmail(driver=driver)
 
     driver.get(URL)
     time.sleep(10)
+    
+    
 
     main_iframe = driver.find_element(By.ID, "main-iframe")
     driver.switch_to.frame(main_iframe)
@@ -100,6 +112,8 @@ def main():
 
     # click the checkbox element
     checkbox_element.click()
+    
+    
 
     time.sleep(3000)
 

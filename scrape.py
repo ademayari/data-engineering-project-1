@@ -1,7 +1,11 @@
 import argparse
 
 from scrape.brussels_airlines.brussels_airlines_scrape import *
+<<<<<<< HEAD
 from scrape.ryanair.ryanair import *
+=======
+from scrape.tui.tui_scrape import *
+>>>>>>> d302c73 (transavia magic)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-a", "--airline", type=str)
@@ -22,4 +26,4 @@ if (airline == 'transavia'):
 if (airline == 'ryanair'):
   ryanair_scrape("2023-04-10")
 if (airline == 'tui'):
-  pass
+  tuiScrape()
