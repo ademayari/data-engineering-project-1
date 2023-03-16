@@ -3,8 +3,8 @@ from selenium.webdriver.chrome.service import Service
 import os
 import undetected_chromedriver as uc 
 
-PATH = os.path.join(os.path.dirname(__file__), "../dependencies/")
 
+PATH = os.path.join(os.path.dirname(__file__), "../dependencies/")
 
 def init_chrome():
   options = uc.ChromeOptions()
