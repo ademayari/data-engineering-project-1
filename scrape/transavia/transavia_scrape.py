@@ -1,3 +1,4 @@
+import random
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -6,7 +7,6 @@ import os
 import time
 import sys
 from datetime import datetime
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait as wait
 
@@ -25,6 +25,12 @@ DESTINATIONS = {
     "italy": "BDS,NAP,PMO".split(","),
     "greece": "HER,RHO,CFU".split(",")
 }
+
+DIMENSIONS = [
+    (1920, 1080),
+    (1366, 768),
+    (1536, 864)
+]
 
 TEMP_DATE = "30-05-2023"
 
@@ -59,6 +65,12 @@ def submit_form(driver: webdriver.Chrome):
     form = driver.find_element(By.XPATH, '//*[@id="desktop"]')
     form.submit()
 
+def init_transavia_search(driver: webdriver.Chrome):
+    driver.get(URL)
+    time.sleep(3)
+
+    
+
 def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
     time.sleep(10000)
     set_departure(driver)
@@ -84,7 +96,7 @@ def main():
     driver.switch_to.frame(nested_iframe)
 
     # wait for the checkbox element to appear
-    checkbox_element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "recaptcha-anchor")))
+    checkbox_element = wait(driver, 10).until(EC.presence_of_element_located((By.ID, "recaptcha-anchor")))
 
     # click the checkbox element
     checkbox_element.click()
