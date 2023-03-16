@@ -20,3 +20,9 @@ def click_by_xpath(xpath, index=0):
 def find_by_xpath(xpath):
      return driver.find_element("xpath", xpath)
 
+def element_not_covered(element):
+    try:
+        element.click()
+        return True
+    except WebDriverException:
+        return False

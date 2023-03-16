@@ -8,56 +8,64 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 from time import sleep
 from . scrape_elements import *
+
+wait = WebDriverWait(driver, 20)
   
-def extract_flight_data():
-    flights = driver.find_elements(By.CLASS_NAME, 'basic-flight-card-layout-container')
-    extracted_data = []
+def extract_flights_data():
+    # Wait for flights to be loaded
+    loading_element = wait.until(
+        EC.presence_of_element_located((By.XPATH, "//*[contains(text(), 'Loading')]"))
+    )
+    wait.until(EC.staleness_of(loading_element))
+    sleep(3)
     
-    for flight in flights:
-        if operated_by_brussels_airlines(flight):
-            extracted_data.append({ 
-                'departure_time': flight.find_element(By.CLASS_NAME, 'bound-departure-datetime').text, 
-                'flight_price': flight.find_element(By.CLASS_NAME, 'price-amount').text, 
-                'stops': extract_stops(flight),
-                'flight_numbers': extract_flight_numbers(flight),
-                'num_seats_available': extract_seats(flight)
-            })
-        
-    return extracted_data
+    flights = wait.until(EC.presence_of_all_elements_located((
+        By.CSS_SELECTOR, "[class='upsell-premium-row-pres has-indicator-ribbons']"
+    )))
+    print(len(flights))
+    
+    return [extract_flight_data(flight) for flight in flights if operated_by_brussels_airlines(flight)]
+
+def extract_flight_data(flight):
+    stops = extract_stops(flight)
+    
+    expansion_panel = flight.find_element(By.TAG_NAME, 'mat-expansion-panel')
+    price_cards = expansion_panel.find_elements(By.TAG_NAME, 'refx-price-card')
+    
+    return { 
+        'departure_time': flight.find_element(By.CLASS_NAME, 'bound-departure-datetime').text, 
+        'arrival_time': flight.find_element(By.CLASS_NAME, 'bound-arrival-datetime').text,
+        'flight_price': flight.find_element(By.CLASS_NAME, 'price-amount').text, 
+        'stops': stops['stops'],
+        'flight_numbers': stops['flight_numbers'],
+        # 'seats_left': expansion_panel.find_element(By.CLASS_NAME, 'message-value').get_attribute('textContent'),
+    }
 
 def extract_stops(flight):
-  stops = flight.find_element(By.CLASS_NAME, 'segments').find_elements(By.TAG_NAME, 'span')
-  extracted_stops = []
-  for stop in stops:
-    extracted_stops.append(stop.text)
-  return extracted_stops
+    flight.find_element(By.CLASS_NAME, 'itin-details-link').click()
+    stop_wrappers = driver.find_elements(By.TAG_NAME, 'refx-segment-details-pres')
+    stop_xpath = "//div[contains(@class, 'seg-details-arv-airport')]//bdo[@class='airport-code']"
+    stops = [stop.find_element(By.XPATH, stop_xpath).text for stop in stop_wrappers]
+    flight_number_xpath = "//span[contains(@class, 'seg-marketing-flight-number')]//b"
+    flight_numbers = [stop.find_element(By.XPATH, flight_number_xpath).text for stop in stop_wrappers]
+    click_by_class('close-btn-bottom')
+    sleep(0.3)
 
-def extract_flight_numbers(flight):
-  flight_numbers = flight.find_elements(By.CLASS_NAME, EXTRACT_FLIGHTS.flight_number_class)
-  extracted_flight_numbers = []
-  for flight_number in flight_numbers:
-    extracted_flight_numbers.append(flight_number.text)
-  return extracted_flight_numbers
-
-def extract_seats(flight):
-  try:
-    seats_available = flight.find_element(By.CLASS_NAME, EXTRACT_FLIGHTS.seats_available_class).text
-    return seats_available.split(' ')[0]
-  except NoSuchElementException:
-    return 'NULL'
+    return {
+        "stops": stops,
+        "flight_numbers": flight_numbers
+    }
 
 def operated_by_brussels_airlines(flight):
     names = flight.find_elements(By.CLASS_NAME, "operating-airline-name")
     for name in names:
-        if name in ["Brussels Airlines", "Lufthansa Cityline", "Lufthansa"]:
+        if name.text in ["Brussels Airlines", "Lufthansa Cityline", "Lufthansa"]:
             return True
     return False
-  
-def set_extra_options():
-  click_by_xpath(extra_options_button)
   
 def set_single_flight():
     click_by_class('dropdown-button-secondary')
@@ -79,11 +87,3 @@ def set_date(month_number, day):
         pass
     find_by_xpath(f"//td[@aria-label[contains(., '{day} {month}')]]").click()
     click_by_class('calendar-footer-continue-button')
-  
-def execute_search():
-  click_by_xpath(SEARCH_BUTTON())
-  sleep(5)
-
-def check_rate_limit():
-  if driver.title == TITLES.RATE_LIMIT:
-    sleep(20)

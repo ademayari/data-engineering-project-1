@@ -24,15 +24,17 @@ def scrape_destination(dest_dates_list, destination):
     click_by_css('#cm-acceptAll')
     set_destination(destination)
     set_single_flight()
-    set_date(month, day)
+    set_date(month, day + 2) # TODO remove
     click_by_xpath("//*[text()='Search flights']")
-    sleep(20000)
 
     for date in destination_data:
         month, day = map(int, date.split('-'))
 
         # Extract flight data
-        flights_data = extract_flight_data()
+        flights_data = extract_flights_data()
+        
+        print(flights_data)
+        print(len(flights_data))
         # for flight in flights_data:
         #     formatted_data = format_flight_data(flight, day, month, country)
         #     write_csv_line('brussels_airlines.csv', formatted_data)
@@ -40,6 +42,7 @@ def scrape_destination(dest_dates_list, destination):
         # # Remove the scraped date and update the JSON file
         # destination_data.remove(date)
         # dest_dates_list[destination] = destination_data
+        sleep(20000)
       
 def format_flight_data(data, day, month, country):
     data = dotdict(data)
