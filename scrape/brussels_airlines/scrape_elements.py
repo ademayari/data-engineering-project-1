@@ -12,7 +12,6 @@ single_flight_button = "// span[contains(text(),\'Enkele reis')]"
 
 PORTAL = dotdict({
   'confirm_button': "// button[contains(text(),\'Akkoord')]",
-  'nav_flights_button': "// a[contains(text(),\' Vluchten vinden ')]"
 })
 
 EXTRACT_FLIGHTS = dotdict({
