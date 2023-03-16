@@ -48,11 +48,11 @@ def ryanair_scrape(date):
                     flightDuration = json_object["trips"][0]["dates"][0]["flights"][j]["segments"][0]["duration"]
                     plaatsenOver = json_object["trips"][0]["dates"][0]["flights"][j]["faresLeft"]
                     flightKey = json_object["trips"][0]["dates"][0]["flights"][j]["flightKey"]
-                    flightNumber = json_object['trips'][0]['dates'][0]['flights'][0]['flightNumber']
+                    flightNumber = json_object['trips'][0]['dates'][0]['flights'][j]['flightNumber']
 
 
                     with open('ryanair.csv', "a", newline='') as csv_file:
                         csv_writer = csv.writer(csv_file)
                         csv_writer.writerow([])
-                        csv_writer.writerow([originName, destinationName, dateOut, prijs, flightDuration, plaatsenOver, flightKey, timeOut, timeArrival])      
+                        csv_writer.writerow([originName, destinationName, dateOut, prijs, flightDuration, plaatsenOver, flightKey, flightNumber, timeOut, timeArrival])      
 

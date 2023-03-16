@@ -52,7 +52,7 @@ def extract_seats(flight):
 def operated_by_brussels_airlines(flight):
     names = flight.find_elements(By.CLASS_NAME, "operating-airline-name")
     for name in names:
-        if name in ["Brussels Airlines", "Lufthansa Cityline", "Lufthansa"]
+        if name in ["Brussels Airlines", "Lufthansa Cityline", "Lufthansa"]:
             return True
     return False
   
