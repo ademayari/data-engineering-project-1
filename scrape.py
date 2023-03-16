@@ -31,9 +31,5 @@ elif airline == 'transavia':
     pass
 elif airline == 'ryanair':
     pass
-    # for entry in date_dest_list:
-    #     destination = entry["destination"]
-    #     for date in entry["dates"]:
-    #         ryanair_scrape(date, destination)
 elif airline == 'tui':
     pass
