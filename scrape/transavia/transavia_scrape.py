@@ -1,5 +1,6 @@
 import random
 from selenium import webdriver
+from selenium.webdriver import ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -8,27 +9,17 @@ import time
 import sys
 from datetime import datetime
 from selenium.webdriver.support import expected_conditions as EC
-<<<<<<< HEAD
-from selenium.webdriver.support.ui import WebDriverWait as wait
-=======
 from selenium.webdriver.support.wait import WebDriverWait as wait
 from gmail import login_gmail
-from captcha import captcha_present
-from gmail import *
+from captcha import solve_captcha_if_present
 import itertools
->>>>>>> d302c73 (transavia magic)
-
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 URL = "https://www.transavia.com/nl-BE/home/"
-
-abs_path = os.path.dirname(__file__)
-PATH = os.path.join(abs_path, "../dependencies/chromedriver")
 
 FROM = "BRU"
 
 DESTINATIONS = {
-    "spain": "ALC,IBZ,AGP,PMI,TFS".split(","),
+    "spain": ['ALC', 'IBZ', 'AGP', 'PMI', 'TFS'],
     "portugal": ["FAO"],
     "italy": "BDS,NAP,PMO".split(","),
     "greece": "HER,RHO,CFU".split(",")
@@ -77,7 +68,14 @@ def init_transavia_search(driver: webdriver.Chrome):
     driver.get(URL)
     time.sleep(3)
 
-    
+    captcha_result = solve_captcha_if_present(driver)
+    if captcha_result:
+        print("bypassed captcha")
+    else: print("captcha impossible Sadge")
+
+def randomise_res(driver: webdriver.Chrome):
+    size = random.choice(DIMENSIONS)
+    driver.set_window_size(size[0], size[1])
 
 def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
     time.sleep(10000)
@@ -89,48 +87,28 @@ def scrape_price(driver: webdriver.Chrome, to, date = TEMP_DATE):
 
 
 
-def main():
-    # for city in itertools.chain(*DESTINATIONS.values()):
-    #     scrape_price
+def main(driver):
+    try:
+        # randomising resolution
+        randomise_res(driver)
+        time.sleep(7)
+        # logging in with Gmail before starting
+        login_gmail(driver)
+        time.sleep(4)
+
+        randomise_res(driver)
+
+        init_transavia_search(driver)
+
+        time.sleep(100000)
+    except Exception as e:
+        print(e.with_traceback)
+
     
-    login_gmail(driver=driver)
+    # scrape_price(driver, 'IBZ')
 
-    driver.get(URL)
-    time.sleep(10)
-    
-    
-
-    main_iframe = driver.find_element(By.ID, "main-iframe")
-    driver.switch_to.frame(main_iframe)
-
-    # navigate to the nested iframe
-    nested_iframe = driver.find_element(By.TAG_NAME, "iframe")
-    driver.switch_to.frame(nested_iframe)
-
-    # wait for the checkbox element to appear
-    checkbox_element = wait(driver, 10).until(EC.presence_of_element_located((By.ID, "recaptcha-anchor")))
-
-    # click the checkbox element
-    checkbox_element.click()
-    
-    
-
-    time.sleep(3000)
-
-    # swith to iframe
-    # driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="main-iframe"]'))
-    
-    # driver.switch_to.frame(driver.find_element(By.XPATH, '//*[@id="reCAPTCHA"]'))
-   
-    # element = wait.until(EC.element_to_be_clickable((By.ID, "recaptcha-anchor")))
-    # element.click()
-
-
-
-
-    #driver.find_element(By.ID, "recaptcha-anchor").click()
-
-    scrape_price(driver, 'IBZ')
 
 if __name__ == "__main__":
-    main()
+    chrome_opts = ChromeOptions()
+    # chrome_opts.add_argument("--headless")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_opts)
