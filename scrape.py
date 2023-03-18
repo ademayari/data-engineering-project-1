@@ -10,7 +10,7 @@ end_date = "10-01"
 destinations = ["ALC", "IBZ", "AGP", "PMI", "TCI", "BDS", "NAP", "PMO", "FAO", "HER", "RHO", "CFU"]
 airlines = ['brussels-airlines', 'transavia', 'ryanair', 'tui']
 
-# generate_files(airlines, start_date, end_date, destinations)
+generate_files(airlines, start_date, end_date, destinations)
 date_dest_list = read_files()
 
 # Parse script arguments

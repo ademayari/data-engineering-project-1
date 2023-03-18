@@ -5,11 +5,10 @@ from services.utils import *
 from datetime import datetime
 from datetime import date
 from date_generator import update_airline_dates
+from services.utils import write_csv_line
 import re
 import os
 import json
-
-URL = 'https://www.brusselsairlines.com/gb/en/homepage'
 
 def brussels_airlines_scrape(dest_dates_list):    
     # for destination in dest_dates_list.keys():
@@ -18,47 +17,40 @@ def brussels_airlines_scrape(dest_dates_list):
 
 def scrape_destination(dest_dates_list, destination):
     destination_data = dest_dates_list[destination]
-    month, day = map(int, destination_data[0].split('-'))
-    
-    driver.get(URL)
-    click_by_css('#cm-acceptAll')
-    set_destination(destination)
-    set_single_flight()
-    set_date(month, day + 2) # TODO remove
-    click_by_xpath("//*[text()='Search flights']")
+    destination_data.reverse()
 
-    for date in destination_data:
-        month, day = map(int, date.split('-'))
+    while len(destination_data):
+        month, day = map(int, destination_data.pop().split('-'))
+        
+        if driver.current_url == 'chrome://welcome/':
+            search_flights(month, day, destination)  
+        elif driver.title == 'Flight selection':
+            day_clicked = click_date(day)
+            
+            if day_clicked != -1:
+                while day < day_clicked:
+                    month, day = map(int, destination_data.pop().split('-'))
+            else:
+                search_flights(month, day, destination)
 
-        # Extract flight data
         flights_data = extract_flights_data()
-        
-        print(flights_data)
-        print(len(flights_data))
-        # for flight in flights_data:
-        #     formatted_data = format_flight_data(flight, day, month, country)
-        #     write_csv_line('brussels_airlines.csv', formatted_data)
-        
-        # # Remove the scraped date and update the JSON file
-        # destination_data.remove(date)
-        # dest_dates_list[destination] = destination_data
-        sleep(20000)
+        for flight in flights_data:
+            write_csv_line('brussels_airlines.csv', format_flight_data(flight, day, month, destination))
       
-def format_flight_data(data, day, month, country):
-    data = dotdict(data)
+    sleep(10000)
 
-    time_matches = re.findall(r'[0-3][0-9]:[0-5][0-9]', data.departure_time)
-    stops = list(map(lambda stop: re.findall(r'[A-Z]+$', stop)[0], data.stops))
+def format_flight_data(data, month, day, destination):
+    data = dotdict(data)
 
     return {
         'departure_date': f'2023-{month}-{day}',
-        'destination_country': country,
         'departure_airport': 'BRU',
-        'destination_airport': stops[-1],
-        'departure_time': time_matches[0], 
-        'arrival_time': time_matches[1],
-        'price': re.findall(r'[0-9]+,?[0-9]*', data.flight_price)[0], 
-        'stops': '-'.join(stops), 
-        'flight_numbers': '-'.join(data.flight_numbers), 
-        'seats_available': data.num_seats_available
+        'destination_airport': destination,
+        'departure_time': data.departure_time, 
+        'arrival_time': data.arrival_time,
+        'price': data.flight_price, 
+        'stops': '-'.join([re.findall(r"[A-Z]+", stop)[0] for stop in data.stops[:-1]]), 
+        'flight_numbers': '-'.join(data.flight_numbers).replace(' ', ''), 
+        # 'seats_available': data.num_seats_available
     }
+    
