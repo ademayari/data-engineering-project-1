@@ -11,3 +11,9 @@ DIMENSIONS = [
     (1366, 768),
     (1536, 864)
 ]
+
+TOGGLE_IDS = [
+    "AS-search-panel-budget-section",
+    "AS-search-panel-budget-section_next-section",
+    "AS-search-panel-when-section_next-section"
+]

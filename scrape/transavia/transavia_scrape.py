@@ -8,13 +8,11 @@ from datetime import datetime
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait as wait
 from gmail import login_gmail
-from captcha import solve_captcha_if_present
-import itertools
 from gmail import *
 from captcha import *
 
 from utils import randomise_res, accept_cookies_if_present
-from search import init_transavia_search, input_departure_airport, input_destination_airport
+from search import init_transavia_search, input_departure_airport, input_destination_airport, set_no_return, set_specific_day, set_date
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
@@ -47,6 +45,12 @@ def main(driver):
         accept_cookies_if_present(driver)
         input_departure_airport(driver)
         input_destination_airport(driver, "IBZ")
+        set_no_return(driver)
+        set_specific_day(driver)
+        set_date(driver, "15-04-2023")
+
+        
+        
 
         
         time.sleep(100000)
@@ -55,7 +59,9 @@ def main(driver):
     
 if __name__ == "__main__":
     chrome_opts = ChromeOptions()
+    chrome_opts.add_extension("../../dependencies/captcha-extension.crx")
     # chrome_opts.add_argument("--headless")
+
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_opts)
 
     main(driver)
