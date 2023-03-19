@@ -4,7 +4,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait as wait
 
 # returns true if captcha solved succesfully, false if captcha went to imageselection phase
@@ -26,9 +25,10 @@ def solve_captcha_if_present(driver: webdriver.Chrome):
 
         popup_element = driver.find_element(By.TAG_NAME, "iframe")
         print("Captcha popup present, resorting to other options")
+        sleep(25)
         return False
     except NoSuchElementException:
-        print("something went wrong, captcha not found")
+        print("captcha not found")
     return True
 
 
