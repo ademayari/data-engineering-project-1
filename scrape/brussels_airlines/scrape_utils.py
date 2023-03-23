@@ -14,7 +14,7 @@ from selenium import webdriver
 from time import sleep
 from . scrape_elements import *
 
-wait = WebDriverWait(driver, 20)
+wait = WebDriverWait(driver, 10)
 URL = 'https://www.brusselsairlines.com/be/en/homepage'
   
 def search_flights(month, day, destination):
@@ -39,8 +39,8 @@ def has_flight_elements_stabilized(driver):
 
 def extract_flights_data():
     loading_element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "loading-container")))
-    wait.until(EC.staleness_of(loading_element))
-    WebDriverWait(driver, 30).until(has_flight_elements_stabilized)
+    wait.until(EC.invisibility_of_element(loading_element))
+    wait.until(has_flight_elements_stabilized)
 
     flights = driver.find_elements(By.TAG_NAME, 'refx-upsell-premium-row-pres')
     return [extract_flight_data(flight) for flight in flights if operated_by_brussels_airlines(flight)]
@@ -51,19 +51,30 @@ def extract_flight_data(flight):
     return { 
         'departure_time': flight.find_element(By.CLASS_NAME, 'bound-departure-datetime').text, 
         'arrival_time': flight.find_element(By.CLASS_NAME, 'bound-arrival-datetime').text,
-        'flight_price': flight.find_element(By.CLASS_NAME, 'price-amount').text, 
+        'flight_price': extract_price(flight), 
         'stops': stops['stops'],
         'flight_numbers': stops['flight_numbers'],
         # 'seats_left': expansion_panel.find_element(By.CLASS_NAME, 'message-value').get_attribute('textContent'),
     }
+    
+def extract_price(flight):
+    try:
+        return flight.find_element(By.CLASS_NAME, 'price-amount').text
+    except:
+        return 'N/A'
 
 def extract_stops(flight):
-    wait.until(EC.element_to_be_clickable((By.CLASS_NAME, f"itin-details-link"))).click()
+    flight.find_element(By.CLASS_NAME, f"itin-details-link").click()
+    dialog = driver.find_element(By.TAG_NAME, 'mat-dialog-container')
     stops = driver.find_elements(By.XPATH, "//bdo[@class='airport-code']")[1::2]
     stops = [stop.text for stop in stops if len(stop.text)]
     flight_numbers = driver.find_elements(By.XPATH, "//span[@class='seg-marketing-flight-number']//b")
     flight_numbers = [flight_number.text for flight_number in flight_numbers]
     click_by_class('close-btn-bottom')
+    try:
+        wait.until(EC.invisibility_of_element(dialog))
+    except:
+        click_by_class('close-btn-bottom')
 
     return {
         "stops": stops,
@@ -99,24 +110,32 @@ def select_month(month_number):
     wait.until(EC.element_to_be_clickable((By.XPATH, f"//span[text()='March']"))).click()
     wait.until(EC.element_to_be_clickable((By.XPATH, f"//div[text()='{month_name}']"))).click()
 
-def click_date(target_day):
+def select_date(target_day):
     try:
         carousel = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'carousel-container')))
     except:
-        return -1
+        return None
 
     li_elems = carousel.find_elements(By.TAG_NAME, 'li')
-    dates = [li.find_element(By.CLASS_NAME, 'cdk-visually-hidden').text for li in li_elems]
-    i_days = [(i, int(re.findall(r"[0-9]+", date_)[0])) for (i, date_) in enumerate(dates) if len(date_)]
-    i_days = [(i_day[0], i_day[1]) for i_day in i_days if i_day[1] >= target_day]
+    dates = [li.find_element(By.CSS_SELECTOR, '.calendar-aria-date').text for li in li_elems]
+    dates = [int(re.findall(r" [0-9]* ", date)[0]) for date in dates]
+    target_li = [li_elems[i] for i, date in enumerate(dates) if date == target_day]
     
-    for next_day in i_days:
-        button = li_elems[next_day[0]].find_element(By.TAG_NAME, 'button')
-        if 'active' not in button.get_attribute('class').split():
-            button.click()
-        else:
-            continue
-        return next_day[1]
+    if len(target_li) == 0:
+        # No more days left in carousel
+        return None  
+    else:
+        target_li = target_li[0]
     
-    return -1
+    button = target_li.find_element(By.TAG_NAME, 'button')
+    if button.get_attribute('disabled') == 'true':
+        # No flights for this day
+        return False
+    else:
+        # There are flights for this day
+        button.click()
+        return True
+    
+    return None
+            
 
