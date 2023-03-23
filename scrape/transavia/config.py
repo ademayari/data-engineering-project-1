@@ -1,5 +1,7 @@
 
 URL = "https://www.transavia.com/nl-BE/boek-een-vlucht/uitgebreid-zoeken/zoeken/"
+API_URL = "https://api.transavia.com/v1/flightoffers/"
+API_KEY = "17c5625ff4424000b95a0ae6f3a23586"
 
 DEPARTURE = "BRU"
 

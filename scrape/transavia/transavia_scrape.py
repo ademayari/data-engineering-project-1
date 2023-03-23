@@ -1,67 +1,72 @@
-from selenium import webdriver
-from selenium.webdriver import ChromeOptions
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
-import time
-from datetime import datetime
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait as wait
-from gmail import login_gmail
-from gmail import *
-from captcha import *
+from api import request_flights
+from requests.exceptions import JSONDecodeError
 
-from utils import randomise_res, accept_cookies_if_present
-from search import init_transavia_search, input_departure_airport, input_destination_airport, set_no_return, set_specific_day, set_date
+from config import DEPARTURE
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+def main():
+    print("START")
 
+def temp_results():
+    print("Tijdelijke resultaten:")
 
-FROM = "BRU"
+    # BRU -> ALC 15/05 -> 20/05
+    count = 0
+    for date in range(20230515, 20230521):
+        try:
+            res = request_flights(DEPARTURE, "ALC", str(date))
+            j = res.json()
+            count += int(j["resultSet"]["count"])
+        except JSONDecodeError:
+            continue
+    print(f"Totaal aantal transavia (BRU->ALC) vluchten van 15/05/2023 tot en met 20/05/2023: {count}")
 
-DESTINATIONS = {
-    "spain": ['ALC', 'IBZ', 'AGP', 'PMI', 'TFS'],
-    "portugal": ["FAO"],
-    "italy": "BDS,NAP,PMO".split(","),
-    "greece": "HER,RHO,CFU".split(",")
-}
+    # BRU -> FAO average price
+    prices = []
+    for date in range(20230601, 20230631):
+        try:
+            res = request_flights(DEPARTURE, "FAO", str(date))
+            j = res.json()
+            l = [flight["pricingInfoSum"]["totalPriceOnePassenger"] for flight in j["flightOffer"]]
+            prices.extend(l)
+        except JSONDecodeError:
+            continue
+    avg = sum(prices)/len(prices)
+    print(f"Gemiddelde prijs voor alle transavia vluchten naar Faro in de maand juni: €{avg}")
 
-
-
-TEMP_DATE = "30-05-2023"
-
-def main(driver):
+    # BRU -> IBZ departure time 24/05
     try:
-        # randomising resolution
-        randomise_res(driver)
-        # logging in with Gmail before starting
-        login_gmail(driver)
-        time.sleep(4)
-
-        # init search
-        randomise_res(driver)
-        init_transavia_search(driver)
-        
-        accept_cookies_if_present(driver)
-        input_departure_airport(driver)
-        input_destination_airport(driver, "IBZ")
-        set_no_return(driver)
-        set_specific_day(driver)
-        set_date(driver, "15-04-2023")
-
-        
-        
-
-        
-        time.sleep(100000)
-    except Exception as e:
-        print(e.with_traceback)
+        res = request_flights(DEPARTURE, "IBZ", "20230524")
+        j = res.json()
+        time = j["flightOffer"][0]["outboundFlight"]["departureDateTime"]
+        time = time[time.index("T")+1:]
+        print(f"Vertrektijd van BRU -> IBZ op 24 mei: {time}")
+    except JSONDecodeError:
+        print("no flight found 24/05")
     
+    # BRU -> TFS arrival time 29/07
+    try:
+        res = request_flights(DEPARTURE, "TFS", "20230729")
+        j = res.json()
+        time = j["flightOffer"][0]["outboundFlight"]["arrivalDateTime"]
+        time = time[time.index("T")+1:]
+        print(f"Aankomsttijd van BRU -> TFS op 29 juli: {time}")
+    except JSONDecodeError:
+        print("no flight found 29/07")
+
+    # BRU -> HER
+    count = 0
+    dates = list(range(20230701,20230732))
+    dates.extend(range(20230801, 20230816))
+    for date in dates:
+        try:
+            res = request_flights(DEPARTURE, "HER", str(date))
+            j = res.json()
+            count += int(j["resultSet"]["count"])
+        except JSONDecodeError:
+            continue
+    print(f"Totaal aantal transavia (BRU->HER)vluchten van 01/07/2023 tot en met 15/08/2023: {count}")
+
+
+        
 if __name__ == "__main__":
-    chrome_opts = ChromeOptions()
-    chrome_opts.add_extension("../../dependencies/captcha-extension.crx")
-    # chrome_opts.add_argument("--headless")
-
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_opts)
-
-    main(driver)
+    temp_results()
