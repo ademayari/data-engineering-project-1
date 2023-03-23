@@ -20,6 +20,7 @@ list_of_destinations = spanje + italie + portugal + griekenland
 
 # huidige datum
 datenow = datetime.now().strftime("%Y-%m-%d")
+date = "2023-03-27"
 
 
 
@@ -56,3 +57,5 @@ def ryanair_scrape(date):
                         csv_writer.writerow([])
                         csv_writer.writerow([originName, destinationName, dateOut, prijs, flightDuration, plaatsenOver, flightKey, flightNumber, timeOut, timeArrival])      
 
+
+ryanair_scrape(date)
