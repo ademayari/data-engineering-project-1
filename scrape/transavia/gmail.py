@@ -1,4 +1,3 @@
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
@@ -8,7 +7,7 @@ LOGIN_EMAIL = "dep12.test@gmail.com"
 LOGIN_PASSWORD = "q.Qn2Jp7PAUmGV3TbAeY"
 
 def login_gmail(driver: webdriver.Chrome):
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(10)
     driver.get(LOGIN_URL)
 
     email_input = driver.find_element(By.XPATH, "//input[@type='email']")
@@ -17,7 +16,7 @@ def login_gmail(driver: webdriver.Chrome):
     first_submit_button = driver.find_element(By.XPATH, "//span[contains(text(),'Volgende')]")
     first_submit_button.click()
 
-    sleep(3)
+    sleep(10)
 
     password_input = driver.find_element(By.XPATH, "//input[@type='password']")
     password_input.send_keys(LOGIN_PASSWORD)
@@ -25,6 +24,6 @@ def login_gmail(driver: webdriver.Chrome):
     second_submit_button = driver.find_element(By.XPATH, "//span[contains(text(), 'Volgende')]")
     second_submit_button.click()
 
-    sleep(5)
+    sleep(10)
 
     
