@@ -12,9 +12,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 from time import sleep
+from . locators import ElementLocatedInFlight
 from . scrape_elements import *
 
+
 wait = WebDriverWait(driver, 10)
+wait1 = WebDriverWait(driver, 1)
 URL = 'https://www.brusselsairlines.com/be/en/homepage'
   
 def search_flights(month, day, destination):
@@ -41,12 +44,16 @@ def extract_flights_data():
     loading_element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "loading-container")))
     wait.until(EC.invisibility_of_element(loading_element))
     wait.until(has_flight_elements_stabilized)
-
+    
     flights = driver.find_elements(By.TAG_NAME, 'refx-upsell-premium-row-pres')
-    return [extract_flight_data(flight) for flight in flights if operated_by_brussels_airlines(flight)]
+    return [extract_flight_data(flight, i) for i, flight in enumerate(flights) if include_flight(flight)]
 
-def extract_flight_data(flight):
+def include_flight(flight):
+    return operated_by_brussels_airlines(flight) and flight_available(flight)
+
+def extract_flight_data(flight, flight_index):
     stops = extract_stops(flight)
+    seats_left = extract_seats_left(flight, flight_index)
     
     return { 
         'departure_time': flight.find_element(By.CLASS_NAME, 'bound-departure-datetime').text, 
@@ -54,7 +61,7 @@ def extract_flight_data(flight):
         'flight_price': extract_price(flight), 
         'stops': stops['stops'],
         'flight_numbers': stops['flight_numbers'],
-        # 'seats_left': expansion_panel.find_element(By.CLASS_NAME, 'message-value').get_attribute('textContent'),
+        'seats_left': seats_left,
     }
     
 def extract_price(flight):
@@ -68,9 +75,10 @@ def extract_stops(flight):
     dialog = driver.find_element(By.TAG_NAME, 'mat-dialog-container')
     stops = driver.find_elements(By.XPATH, "//bdo[@class='airport-code']")[1::2]
     stops = [stop.text for stop in stops if len(stop.text)]
-    flight_numbers = driver.find_elements(By.XPATH, "//span[@class='seg-marketing-flight-number']//b")
+    flight_numbers = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//span[contains(@class, 'seg-marketing-flight-number') or contains(@class, 'seg-marketing-reference-number')]//b")))
     flight_numbers = [flight_number.text for flight_number in flight_numbers]
     click_by_class('close-btn-bottom')
+
     try:
         wait.until(EC.invisibility_of_element(dialog))
     except:
@@ -80,6 +88,19 @@ def extract_stops(flight):
         "stops": stops,
         "flight_numbers": flight_numbers
     }
+    
+def extract_seats_left(flight, flight_index):
+    # Open expansion panel
+    button_locator = (By.XPATH, ".//button[contains(@class, 'flight-card-button-desktop') and contains(@class, 'eco')]")
+    button = wait.until(ElementLocatedInFlight(flight, button_locator))
+    button.click()
+    
+    # Expansion panel added to DOM
+    flight = get_updated_flight(flight_index)
+    expansion_panel = flight.find_element(By.TAG_NAME, 'mat-expansion-panel')
+    seats_left = expansion_panel.find_element(By.XPATH, "//span[@class='refx-caption message-value']").text
+    
+    return seats_left
 
 def operated_by_brussels_airlines(flight):
     names = flight.find_elements(By.CLASS_NAME, "operating-airline-name")
@@ -87,6 +108,14 @@ def operated_by_brussels_airlines(flight):
         if name.text in ["Brussels Airlines", "Lufthansa Cityline", "Lufthansa"]:
             return True
     return False
+
+def flight_available(flight):
+    try:
+        economy_locator = (By.XPATH, ".//div[contains(@class, 'not-available-cabin-title') and text()='Economy']")
+        wait.until(ElementLocatedInFlight(flight, economy_locator))
+        return False
+    except:
+        return True
   
 def set_single_flight():
     click_by_class('dropdown-button-secondary')
@@ -124,10 +153,8 @@ def select_date(target_day):
     if len(target_li) == 0:
         # No more days left in carousel
         return None  
-    else:
-        target_li = target_li[0]
     
-    button = target_li.find_element(By.TAG_NAME, 'button')
+    button = target_li[0].find_element(By.TAG_NAME, 'button')
     if button.get_attribute('disabled') == 'true':
         # No flights for this day
         return False
@@ -138,4 +165,5 @@ def select_date(target_day):
     
     return None
             
-
+def get_updated_flight(flight_index):
+    return driver.find_elements(By.TAG_NAME, 'refx-upsell-premium-row-pres')[flight_index]

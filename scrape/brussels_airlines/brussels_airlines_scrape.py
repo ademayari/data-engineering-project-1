@@ -47,6 +47,7 @@ def search_flights_for_day(day, month, destination, destination_data):
     
 def scrape_day(day, month, destination, destination_data):
     flights_data = extract_flights_data()
+    print(flights_data)
     destination_data.pop()
     for flight in flights_data:
         write_csv_line('brussels_airlines.csv', format_flight_data(flight, day, month, destination)) 
@@ -63,6 +64,6 @@ def format_flight_data(data, month, day, destination):
         'price': data.flight_price, 
         'stops': '-'.join([re.findall(r"[A-Z]+", stop)[0] for stop in data.stops[:-1]]), 
         'flight_numbers': '-'.join(data.flight_numbers).replace(' ', ''), 
-        # 'seats_available': data.num_seats_available
+        'seats_left': re.findall(r"[0-9]*", data.seats_left)[0]
     }
     
