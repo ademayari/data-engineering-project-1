@@ -2,7 +2,7 @@ import argparse
 from datetime import datetime
 from date_generator import generate_files, read_files
 from scrape.brussels_airlines.brussels_airlines_scrape import *
-from scrape.ryanair.ryanair import *
+from scrape.ryanair.ryanair import ryanair_scrape
 # from scrape.tui.tui_scrape import *
 
 # Generate files containing dates and destinations
