@@ -1,81 +1,96 @@
 import csv
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
+destination_codes = ["ALC", "IBZ", "AGP", "PMI", "TFS", "BDS", "NAP", "PMO", "FAO", "HER", "RHO", "CFU"]
+
+
+
+csv_headers = ["Departure Airport Name","Departure Airport Code","Arrival Airport Name","Arrival Airport Code","DepartureTime","ArrivalTime","Flight_duration","TotalStops","Price","AvailableSeats","FlightNumber"]
+csv_file_path = "flight_data.csv"
+if not os.path.exists("TUI_data"):
+    os.mkdir("TUI_data")
+if not os.path.exists(csv_file_path):
+    with open(csv_file_path, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(csv_headers)
+
+
+PATH = "/dependencies/chromedriver_windows.exe"
+options = webdriver.ChromeOptions()
+options.add_experimental_option("detach", True)
+options.add_argument('--ignore-certificate-errors')
+driver_service = Service(executable_path=PATH)
+driver = webdriver.Chrome(service=driver_service, options=options)
+driver.maximize_window()
+driver.implicitly_wait(10)
+
+
 def tuiScrape():
-    destination_codes = ["ALC", "IBZ", "AGP", "PMI", "TFS", "BDS", "NAP", "PMO", "FAO", "HER", "RHO", "CFU"]
-    datenow = datetime.now().strftime("%Y-%m-%d")
-    #start_date = datetime(2023, 4, 1)
-    #end_date = datetime(2023, 6, 30)
-
-
-    csv_headers = ["Departure Airport Name","Departure Airport Code","Arrival Airport Name","Arrival Airport Code","DepartureTime","ArrivalTime","Flight_duration","TotalStops","Price","AvailableSeats","FlightNumber"]
-    csv_file_path = "flight_data.csv"
-    if not os.path.exists("TUI_data"):
-        os.mkdir("TUI_data")
-    if not os.path.exists(csv_file_path):
-        with open(csv_file_path, mode='w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(csv_headers)
-
-
-    PATH = "/dependencies/chromedriver_windows.exe"
-    options = webdriver.ChromeOptions()
-    options.add_experimental_option("detach", True)
-    options.add_argument('--ignore-certificate-errors')
-    driver_service = Service(executable_path=PATH)
-    driver = webdriver.Chrome(service=driver_service, options=options)
-    driver.maximize_window()
-    driver.implicitly_wait(10)
-
-
-
-    for dest_code in destination_codes:
-    
-        url = f"https://www.tuifly.be/flight/nl/search?flyingFrom%5B%5D=BRU&flyingTo%5B%5D={dest_code}&depDate={datenow}&adults=1&children=0&childAge=&choiceSearch=true&searchType=pricegrid&nearByAirports=true&currency=EUR&isOneWay=true"
-        driver.get(url)
-
-        try:
-            driver.find_element(By.CSS_SELECTOR, "#cmCloseBanner").click()
-        except:
-            pass
-
-        element = WebDriverWait(driver, 50).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "div#page div.container footer > script"))
-        )
-
-        data = driver.execute_script("return JSON.stringify(searchResultsJson)")
-        json_object = json.loads(data)
-        print(json_object)
-            
-            
+    start_date = datetime.now().strftime("%Y-%m-%d")
+    end_date = "2023-10-01"
+    while start_date <= end_date:
         
-            
-            
-            
-        for flight in json_object['flightViewData']:
-            dep_airport_name = flight['journeySummary']['departAirportName']
-            dep_airport_code = flight['journeySummary']['departAirportCode']
-            arr_airport_name = flight['journeySummary']['arrivalAirportName']
-            arr_airport_code = flight['journeySummary']['arrivalAirportCode']
-            dep_date = flight['journeySummary']['departDate']
-            dep_time = flight['journeySummary']['depTime']
-            arr_date = flight['journeySummary']['arrivalDate']
-            arr_time = flight['journeySummary']['arrivalTime']
-            flight_duration = flight['journeySummary']['journeyDuration']
-            price = flight['originalTotalPrice']
-            stops = flight['journeySummary']['totalNumberOfStops']
-            available_seats = flight['journeySummary']['availableSeats']
-            flightNumber = flight['flightsectors'][0]['flightNumber']
+        
+        
+        for dest_code in destination_codes:
+            try:
+                url = f"https://www.tuifly.be/flight/nl/search?flyingFrom%5B%5D=BRU&flyingTo%5B%5D={dest_code}&depDate={start_date}&adults=1&children=0&childAge=&choiceSearch=true&searchType=pricegrid&nearByAirports=true&currency=EUR&isOneWay=true"
+                driver.get(url)
+            except:
+                print("Error: Could not open URL")
+                driver.refresh()
+                continue
+            try:
+                driver.find_element(By.CSS_SELECTOR, "#cmCloseBanner").click()
+            except:
+                pass
                 
-            with open(csv_file_path, mode='a', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow([dep_airport_name, dep_airport_code, arr_airport_name, arr_airport_code,dep_date + ' ' + dep_time, arr_date + ' ' + arr_time, flight_duration, stops, price, available_seats, flightNumber])
+
+            element = WebDriverWait(driver, 50).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "div#page div.container footer > script"))
+            )
+            try:
+                data = driver.execute_script("return JSON.stringify(searchResultsJson)")
+            except:
+                print("Error: Could not get JSON data")
+                driver.refresh()
+                continue
+            json_object = json.loads(data)
+            print(json_object)
+                
+                
+            
+                
+                
+                
+            for flight in json_object['flightViewData']:
+                dep_airport_name = flight['journeySummary']['departAirportName']
+                dep_airport_code = flight['journeySummary']['departAirportCode']
+                arr_airport_name = flight['journeySummary']['arrivalAirportName']
+                arr_airport_code = flight['journeySummary']['arrivalAirportCode']
+                dep_date = flight['journeySummary']['departDate']
+                dep_time = flight['journeySummary']['depTime']
+                arr_date = flight['journeySummary']['arrivalDate']
+                arr_time = flight['journeySummary']['arrivalTime']
+                flight_duration = flight['journeySummary']['journeyDuration']
+                price = flight['originalTotalPrice']
+                stops = flight['journeySummary']['totalNumberOfStops']
+                available_seats = flight['journeySummary']['availableSeats']
+                flightNumber = flight['flightsectors'][0]['flightNumber']
+                    
+                with open(csv_file_path, mode='a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow([dep_airport_name, dep_airport_code, arr_airport_name, arr_airport_code,dep_date + ' ' + dep_time, arr_date + ' ' + arr_time, flight_duration, stops, price, available_seats, flightNumber])
+                
+        start_date = datetime.strptime(start_date, "%Y-%m-%d").date() + timedelta(days=7)
+        start_date = start_date.strftime("%Y-%m-%d")
 
 tuiScrape()            
