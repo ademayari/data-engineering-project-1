@@ -32,7 +32,6 @@ def transavia_scrape(transavia_dates):
                         print(f"keyerror: {e.with_traceback}")
                         print(f"obj = {res.json()}")
 
-
 if __name__ == "__main__":
     if argv[0] is not None and argv[0] == "temp":
         temp_results()
