@@ -27,6 +27,10 @@ datenow = datetime.now().strftime("%Y-%m-%d")
 
 
 def ryanair_scrape(date):
+
+#    session = requests.Session()
+#    session.headers['User-Agent'] = USER_AGENT
+    
     for destination, dates in date.items():
         for i in dates:
             print("SCRAPING DESTINATION " + colored(destination, 'green') + " FOR DATE " + colored(i, 'green'))
@@ -92,7 +96,6 @@ def ryanair_scrape(date):
 
                             with open('ryanair.csv', "a", newline='') as csv_file:
                                 csv_writer = csv.writer(csv_file)
-                                csv_writer.writerow([])
                                 csv_writer.writerow([originName, destinationName, dateOut, prijs, flightDuration, plaatsenOver, flightKey, flightNumber, timeOut, timeArrival])      
 
 
