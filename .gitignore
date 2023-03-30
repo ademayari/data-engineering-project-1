@@ -1,4 +1,4 @@
 *.csv
 __pycache__
 .vscode/
-dates_to_scrape
+dates_to_scrape/

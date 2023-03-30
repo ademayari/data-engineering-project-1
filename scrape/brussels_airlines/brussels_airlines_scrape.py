@@ -11,8 +11,6 @@ import re
 import os
 import json
 
-URL = 'https://www.brusselsairlines.com/be/en/homepage'
-
 def brussels_airlines_scrape(dest_dates_list):    
     # for destination in dest_dates_list.keys():
         # scrape_destination(dest_dates_list, destination, dest_dates_list[destination])

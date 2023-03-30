@@ -1,8 +1,6 @@
 import argparse
 from datetime import datetime
 from date_generator import generate_files, read_files
-from scrape.brussels_airlines.brussels_airlines_scrape import *
-from scrape.ryanair.ryanair import ryanair_scrape
 # from scrape.tui.tui_scrape import *
 
 # Generate files containing dates and destinations
@@ -27,10 +25,14 @@ elif airline not in airlines:
     print(f'Error: Airline not recognized\nValid airlines: {valid_airlines}')
 
 if airline == 'brussels-airlines':
+    from scrape.brussels_airlines.brussels_airlines_scrape import *
+    
     brussels_airlines_scrape(date_dest_list['brussels-airlines'])
 elif airline == 'transavia':
     pass
 elif airline == 'ryanair':
+    from scrape.ryanair.ryanair import ryanair_scrape
+    
     ryanair_scrape(date_dest_list['ryanair']) # further synchronization needed
 elif airline == 'tui':
     pass

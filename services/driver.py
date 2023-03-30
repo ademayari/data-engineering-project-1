@@ -5,10 +5,11 @@ import undetected_chromedriver as uc
 
 def init_chrome():
     options = uc.ChromeOptions()
-    options.headless = True
+    # options.headless = True
 
     driver = uc.Chrome(options=options)
     driver.maximize_window()
+    driver.implicitly_wait(10)
     
     return driver
 
