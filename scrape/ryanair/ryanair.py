@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 import csv
+import time
 
 
 ONE_WAY_URL = "https://www.ryanair.com/api/booking/v4/nl-nl/availability?ADT=1&CHD=0&DateIn=2023-03-14&DateOut=2023-03-02&Destination=AGP&Disc=0&INF=0&Origin=BRU&TEEN=0&IncludeConnectingFlights=true&RoundTrip=false&ToUs=AGREED"
@@ -33,6 +34,7 @@ def ryanair_scrape(date):
                 NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("03-02", str(i))
                 for l in range(3):
                     try:
+                        time.sleep(3)
                         page = requests.get(NEW_ONE_WAY_URL)
                         
                         soup = BeautifulSoup(page.content, "lxml")
