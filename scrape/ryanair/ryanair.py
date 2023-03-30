@@ -42,7 +42,7 @@ def ryanair_scrape(date):
                     aantal_vluchten = 0
                 
                 # get columns originName, destinationName, dateOut, value, flightDuration, faresLeft and flightKey from the json object and add them to ryanair.csv
-                print("NUM FLIGHTS: " + aantal_vluchten)
+                print(f"NUM FLIGHTS: {aantal_vluchten}")
                 if aantal_vluchten != 0:
                     if json_object["trips"][0]["dates"][0]["flights"] != []:
 
