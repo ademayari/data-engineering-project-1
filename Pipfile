@@ -10,6 +10,8 @@ pandas = "*"
 bs4 = "*"
 lxml = "*"
 termcolor = "*"
+pillow = "*"
+selenium-screenshot = "*"
 
 [dev-packages]
 

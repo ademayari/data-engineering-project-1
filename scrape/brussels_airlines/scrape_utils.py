@@ -9,6 +9,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException
 from services.selenium_helpers import *
 from services.driver import driver
+# from PIL import Image
+# from Screenshot import Screenshot_clipping
 from .conditions import *
 
 
@@ -44,8 +46,8 @@ ITIN_DETAILS_BUTTON = "itin-details-link"
 ITIN_DIALOG = "mat-dialog-container"
 ITIN_CLOSE = "close-btn-bottom"
 EXPANSION_PANEL = "mat-expansion-panel"
-FLIGHT_PRICE = ".//button[contains(@class, 'eco')]//*[contains(@class, 'price-amount')]"
-  
+FLIGHT_PRICE = ".//button[contains(@class, 'eco')]//span[contains(@class, 'price-amount')]"
+
 
 def search_flights(month, day, destination):
     driver.get(URL)
@@ -80,19 +82,11 @@ def extract_flight_data(flight, flight_index):
     return { 
         'departure_time': find_element_by_class(DEPARTURE_TIME, flight).text, 
         'arrival_time': find_element_by_class(ARRIVAL_TIME, flight).text,
-        'flight_price': extract_price(flight), 
+        'flight_price': find_element_by_xpath(FLIGHT_PRICE, flight).text, 
         'stops': stops[0],
         'flight_numbers': stops[1],
         'seats_left': seats_left,
     }
-
-    
-def extract_price(flight):
-    try:
-        price_element = flight.find_element_by_xpath(FLIGHT_PRICE)
-        return price_element.text
-    except:
-        return 'N/A'
 
 
 def extract_stops(flight):
@@ -117,7 +111,10 @@ def extract_seats_left(flight, flight_index):
     flight = find_elements_by_tag(FLIGHT_ROW_TAG)[flight_index]
     expansion_panel = find_element_by_tag(EXPANSION_PANEL, flight)
     
-    return find_element_by_class(NUM_SEATS, expansion_panel).text
+    try:
+        return find_element_by_xpath(NUM_SEATS, expansion_panel).text
+    except:
+        return 'N/A'
 
 
 def operated_by_brussels_airlines(flight):

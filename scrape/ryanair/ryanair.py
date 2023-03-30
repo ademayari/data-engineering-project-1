@@ -8,23 +8,8 @@ from termcolor import colored
 
 
 ONE_WAY_URL = "https://www.ryanair.com/api/booking/v4/nl-nl/availability?ADT=1&CHD=0&DateIn=2023-03-14&DateOut=2023-03-02&Destination=AGP&Disc=0&INF=0&Origin=BRU&TEEN=0&IncludeConnectingFlights=true&RoundTrip=false&ToUs=AGREED"
-
-
-
-spanje = ["ALC", "IBZ", "AGP", "PMI", "TFS"]
-italie = ["BDS", "NAP", "PMO"]
-portugal = ["FAO"]
-griekenland = ["HER", "RHO","CFU"]
 luchthaven = ["BRU", "CRL"]
-
-list_of_destinations = spanje + italie + portugal + griekenland 
-
-
-# huidige datum
 datenow = datetime.now().strftime("%Y-%m-%d")
-#date = "2023-03-27"
-
-
 
 def ryanair_scrape(date):
     for destination, dates in date.items():
@@ -53,6 +38,7 @@ def ryanair_scrape(date):
                     aantal_vluchten = 0
                 
                 # get columns originName, destinationName, dateOut, value, flightDuration, faresLeft and flightKey from the json object and add them to ryanair.csv
+                print("NUM FLIGHTS: " + aantal_vluchten)
                 if aantal_vluchten != 0:
                     if json_object["trips"][0]["dates"][0]["flights"] != []:
 

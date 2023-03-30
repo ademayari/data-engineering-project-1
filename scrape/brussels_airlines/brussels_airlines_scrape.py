@@ -7,6 +7,7 @@ from datetime import datetime
 from datetime import date
 from date_generator import update_airline_dates
 from services.utils import write_csv_line
+from termcolor import colored
 import re
 import os
 import json
@@ -23,10 +24,10 @@ def scrape_destination(dest_dates_list, destination):
     while len(destination_data):
         month, day = map(int, destination_data[-1].split('-'))
         if search_flights_for_day(day, month, destination, destination_data):
-            print(f"SCRAPING: {month}-{day}, DAYS LEFT: {len(destination_data)}")
+            print("SCRAPING DESTINATION: " + colored(destination, 'green') + " FOR DATE " + colored(f"{month}-{day}", 'green') + " DAYS LEFT: " + colored(len(destination_data), 'green'))
             scrape_day(day, month, destination, destination_data)
         else:
-            print(f"NO FLIGHTS FOR: {month}-{day}, DAYS LEFT: {len(destination_data)}")
+            print(f"NO FLIGHTS FOR:" + colored(f"{month}-{day}", 'green') + " DAYS LEFT: " + colored(len(destination_data), 'green'))
     
 def search_flights_for_day(day, month, destination, destination_data):
     if driver.title == 'Flight selection':
@@ -45,10 +46,10 @@ def search_flights_for_day(day, month, destination, destination_data):
     
 def scrape_day(day, month, destination, destination_data):
     flights_data = extract_flights_data()
-    print(flights_data)
-    destination_data.pop()
+    # TODO you know
     for flight in flights_data:
         write_csv_line('brussels_airlines.csv', format_flight_data(flight, day, month, destination)) 
+    destination_data.pop()
 
 def format_flight_data(data, month, day, destination):
     data = dotdict(data)
