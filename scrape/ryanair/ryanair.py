@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 import csv
 import time
+from termcolor import colored
 
 
 ONE_WAY_URL = "https://www.ryanair.com/api/booking/v4/nl-nl/availability?ADT=1&CHD=0&DateIn=2023-03-14&DateOut=2023-03-02&Destination=AGP&Disc=0&INF=0&Origin=BRU&TEEN=0&IncludeConnectingFlights=true&RoundTrip=false&ToUs=AGREED"
@@ -28,6 +29,7 @@ datenow = datetime.now().strftime("%Y-%m-%d")
 def ryanair_scrape(date):
     for destination, dates in date.items():
         for i in dates:
+            print("SCRAPING DESTINATION " + colored(destination, 'green') + " FOR DATE " + colored(i, 'green'))
             for j in luchthaven:
                 
                 NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", destination)

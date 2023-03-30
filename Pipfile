@@ -9,6 +9,7 @@ undetected-chromedriver = "*"
 pandas = "*"
 bs4 = "*"
 lxml = "*"
+termcolor = "*"
 
 [dev-packages]
 
