@@ -36,7 +36,6 @@ def ryanair_scrape(date):
                 NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("03-02", str(i))
                 for l in range(3):
                     try:
-                        time.sleep(3)
                         page = requests.get(NEW_ONE_WAY_URL)
                         
                         soup = BeautifulSoup(page.content, "lxml")
