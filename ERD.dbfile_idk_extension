@@ -1,0 +1,22 @@
+Airport
+-----
+code string PK
+name string UNIQUE
+country string
+
+Flight
+-----
+flight_id string PK
+departure string default="BRU" FK >- Airport.code
+destination string FK >- Airport.code
+departure_time datetime
+arrival_time datetime
+stops int
+-----
+
+Flight_data
+-----
+flight_id string PK FK >- Flight.flight_id
+time_of_data datetime PK
+price float
+seats_left int
