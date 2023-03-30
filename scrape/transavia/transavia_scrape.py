@@ -9,8 +9,8 @@ from temp import temp_results
 from config import DEPARTURE, JSON_HEADER
 from utils import json_to_csv
 
-def main():
-    with open("../../dates_to_scrape/transavia.json", "r") as dates_file:
+def transavia_scrape(transavia_dates):
+    with open(transavia_dates, "r") as dates_file:
         with open(f"./transavia_data{Date.today()}.csv", "w") as outfile:
             data = json.load(dates_file)
             outfile.writelines([JSON_HEADER + "\n"])
@@ -37,4 +37,4 @@ if __name__ == "__main__":
     if argv[0] is not None and argv[0] == "temp":
         temp_results()
     else:
-        main()
+        transavia_scrape()

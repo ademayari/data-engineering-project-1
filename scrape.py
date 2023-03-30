@@ -3,7 +3,9 @@ from datetime import datetime
 from date_generator import generate_files, read_files
 from scrape.brussels_airlines.brussels_airlines_scrape import *
 from scrape.ryanair.ryanair import ryanair_scrape
-# from scrape.tui.tui_scrape import *
+from scrape.transavia.transavia_scrape import transavia_scrape
+from scrape.tui.tui_scrape import tui_scrape
+
 
 # Generate files containing dates and destinations
 start_date = datetime.now().strftime("%m-%d")
@@ -29,8 +31,8 @@ elif airline not in airlines:
 if airline == 'brussels-airlines':
     brussels_airlines_scrape(date_dest_list['brussels-airlines'])
 elif airline == 'transavia':
-    pass
+    transavia_scrape(date_dest_list['transavia'])
 elif airline == 'ryanair':
     ryanair_scrape(date_dest_list['ryanair']) # further synchronization needed
 elif airline == 'tui':
-    pass
+    tui_scrape(date_dest_list['tui'])
