@@ -23,6 +23,7 @@ def ryanair_scrape(date):
                 
                 NEW_ONE_WAY_URL = ONE_WAY_URL.replace("AGP", destination)
                 NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("03-02", str(i))
+                NEW_ONE_WAY_URL = NEW_ONE_WAY_URL.replace("BRU", j)
                 for l in range(3):
                     try:
                         page = requests.get(NEW_ONE_WAY_URL)

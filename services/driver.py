@@ -6,7 +6,7 @@ import undetected_chromedriver as uc
 def init_chrome():
     options = uc.ChromeOptions()
     options.headless = True
-    options.add_argument("--ignore-certificate-errors");
+    options.add_argument("--ignore-certificate-errors")
     driver = uc.Chrome(options=options)
     driver.maximize_window()
     driver.implicitly_wait(10)
