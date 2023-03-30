@@ -7,6 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from services.driver import driver
 
 def tui_scrape(tui_dates):
 
@@ -26,17 +27,6 @@ def tui_scrape(tui_dates):
         with open(csv_file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(csv_headers)
-
-
-        PATH = "/dependencies/chromedriver_windows.exe"
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option("detach", True)
-        options.add_argument('--ignore-certificate-errors')
-        driver_service = Service(executable_path=PATH)
-        driver = webdriver.Chrome(service=driver_service, options=options)
-        driver.maximize_window()
-        driver.implicitly_wait(10)
-
 
 
         for city, dates in tui_dates.items():
