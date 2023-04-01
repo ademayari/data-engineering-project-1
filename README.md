@@ -8,7 +8,7 @@ The repository is organized into the following main folders:
 
 - `dependencies`: Contains scripts and files for installing dependencies required by the project.
 - `scrape`: Contains the main Python script `scrape.py` which is responsible for scraping flight information from the targeted airlines' websites.
-- `service`: Contains the Python script `date_generator.py` which generates dates to be used by `scrape.py`.
+- `service`: Contains the Python scripts `driver.py`, `selenium_helpers.py`, `utils.py` which initialize the drivers and additional utils for the scripts that are using selenium.
 - `tijdelijke_data`: Contains temporary data generated during the scraping process.
 
 In addition to these folders, the repository also contains the following files:
