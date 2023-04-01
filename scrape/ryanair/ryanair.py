@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 import csv
-import time
 from termcolor import colored
 
 
@@ -11,11 +10,13 @@ ONE_WAY_URL = "https://www.ryanair.com/api/booking/v4/nl-nl/availability?ADT=1&C
 luchthaven = ["BRU", "CRL"]
 datenow = datetime.now().strftime("%Y-%m-%d")
 
-def ryanair_scrape(date):
 
-#    session = requests.Session()
-#    session.headers['User-Agent'] = USER_AGENT
-    
+
+def ryanair_scrape(date):
+    with open(f'ryanair_{datenow}.csv', "w", newline='') as csv_file:
+        csv_writer = csv.writer(csv_file, delimiter=',')
+        csv_writer.writerow(["originName", "destinationName", "dateOut", "prijs", "timeOut", "timeArrival", "flightDuration", "plaatsenOver", "flightKey", "flightNumber"])
+
     for destination, dates in date.items():
         for i in dates:
             print("SCRAPING DESTINATION " + colored(destination, 'green') + " FOR DATE " + colored(i, 'green'))
@@ -81,9 +82,8 @@ def ryanair_scrape(date):
                                 flightNumber = "None"
 
 
-                            with open('ryanair.csv', "a", newline='') as csv_file:
+                            with open(f'ryanair_{datenow}.csv', "a", newline='') as csv_file:
                                 csv_writer = csv.writer(csv_file)
                                 csv_writer.writerow([originName, destinationName, dateOut, prijs, flightDuration, plaatsenOver, flightKey, flightNumber, timeOut, timeArrival])      
 
 
-#ryanair_scrape(date)
