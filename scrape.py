@@ -3,6 +3,7 @@ from datetime import datetime
 from date_generator import generate_files, read_files
 
 
+
 # Generate files containing dates and destinations
 start_date = datetime.now().strftime("%m-%d")
 end_date = "10-01"
@@ -29,6 +30,7 @@ if airline == 'brussels-airlines':
     brussels_airlines_scrape(date_dest_list['brussels-airlines'])
 
 elif airline == 'transavia':
+
     from scrape.transavia.transavia_scrape import transavia_scrape
     transavia_scrape(date_dest_list['transavia'])
 

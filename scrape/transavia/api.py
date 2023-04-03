@@ -1,6 +1,6 @@
 import requests
 
-from config import API_URL, API_KEY
+from scrape.transavia.config import API_URL, API_KEY
 
 def headers():
     return {

@@ -1,7 +1,7 @@
 from requests.exceptions import JSONDecodeError
 
-from api import request_flights
-from config import DEPARTURE
+from scrape.transavia.api import request_flights
+from scrape.transavia.config import DEPARTURE
 
 def temp_results():
     print("Tijdelijke resultaten:")

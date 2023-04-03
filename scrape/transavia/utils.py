@@ -7,7 +7,7 @@ from selenium.common.exceptions import NoSuchElementException, ElementNotInterac
 
 import random
 
-from config import DIMENSIONS
+from scrape.transavia.config import DIMENSIONS
 
 
 def randomise_res(driver: webdriver.Chrome):
