@@ -9,6 +9,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from services.driver import driver
 
+
+
+datenow = datetime.now().strftime("%Y-%m-%d")
+
 def tui_scrape(tui_dates):
 
     #    destination_codes = ["ALC", "IBZ", "AGP", "PMI", "TFS", "BDS", "NAP", "PMO", "FAO", "HER", "RHO", "CFU"]
@@ -20,9 +24,9 @@ def tui_scrape(tui_dates):
 
 
     csv_headers = ["Departure Airport Name","Departure Airport Code","Arrival Airport Name","Arrival Airport Code","DepartureTime","ArrivalTime","Flight_duration","TotalStops","Price","AvailableSeats","FlightNumber"]
-    csv_file_path = "flight_data.csv"
-    if not os.path.exists("TUI_data"):
-        os.mkdir("TUI_data")
+    csv_file_path = f'TUI_flight_data_{datenow}.csv'
+    # if not os.path.exists("TUI_data"):
+    #     os.mkdir("TUI_data")
     if not os.path.exists(csv_file_path):
         with open(csv_file_path, mode='w', newline='') as file:
             writer = csv.writer(file)

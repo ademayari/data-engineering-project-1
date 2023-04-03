@@ -36,7 +36,7 @@ elif airline == 'transavia':
 
 elif airline == 'ryanair':
     from scrape.ryanair.ryanair import ryanair_scrape
-    ryanair_scrape(date_dest_list['ryanair']) # further synchronization needed
+    ryanair_scrape(date_dest_list['ryanair']) 
 
 elif airline == 'tui':
     from scrape.tui.tui_scrape import tui_scrape
