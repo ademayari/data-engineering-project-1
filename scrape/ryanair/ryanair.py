@@ -13,7 +13,7 @@ datenow = datetime.now().strftime("%Y-%m-%d")
 
 
 def ryanair_scrape(date):
-    with open(f'ryanair_{datenow}.csv', "w", newline='') as csv_file:
+    with open(f'/home/vicuser/data-engineering-project-1/data_collection/ryanair_data/ryanair_{datenow}.csv', "w", newline='') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=',')
         csv_writer.writerow(["originName", "destinationName", "dateOut", "prijs", "timeOut", "timeArrival", "flightDuration", "plaatsenOver", "flightKey", "flightNumber"])
 
@@ -82,7 +82,7 @@ def ryanair_scrape(date):
                                 flightNumber = "None"
 
 
-                            with open(f'ryanair_{datenow}.csv', "a", newline='') as csv_file:
+                            with open(f'/home/vicuser/data-engineering-project-1/data_collection/ryanair_data/ryanair_{datenow}.csv', "a", newline='') as csv_file:
                                 csv_writer = csv.writer(csv_file)
                                 csv_writer.writerow([originName, destinationName, dateOut, prijs, flightDuration, plaatsenOver, flightKey, flightNumber, timeOut, timeArrival])      
 

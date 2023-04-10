@@ -11,7 +11,7 @@ from scrape.transavia.utils import json_to_csv
 
 def transavia_scrape(transavia_dates):
 
-    with open(f"./transavia_data{Date.today()}.csv", "w") as outfile:
+    with open(f"/home/vicuser/data-engineering-project-1/data_collection/transavia_data/transavia_data{Date.today()}.csv", "w") as outfile:
         outfile.writelines([JSON_HEADER + "\n"])
         for city, dates in transavia_dates.items():
             for date in dates:
