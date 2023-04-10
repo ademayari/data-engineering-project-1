@@ -15,18 +15,10 @@ datenow = datetime.now().strftime("%Y-%m-%d")
 
 def tui_scrape(tui_dates):
 
-    #    destination_codes = ["ALC", "IBZ", "AGP", "PMI", "TFS", "BDS", "NAP", "PMO", "FAO", "HER", "RHO", "CFU"]
-
-
-        #datenow = datetime.now().strftime("%Y-%m-%d")
-        #start_date = datetime(2023, 4, 1)
-        #end_date = datetime(2023, 6, 30)
-
 
     csv_headers = ["Departure Airport Name","Departure Airport Code","Arrival Airport Name","Arrival Airport Code","DepartureTime","ArrivalTime","Flight_duration","TotalStops","Price","AvailableSeats","FlightNumber"]
     csv_file_path = f'TUI_flight_data_{datenow}.csv'
-    # if not os.path.exists("TUI_data"):
-    #     os.mkdir("TUI_data")
+
     if not os.path.exists(csv_file_path):
         with open(csv_file_path, mode='w', newline='') as file:
             writer = csv.writer(file)
@@ -50,13 +42,8 @@ def tui_scrape(tui_dates):
 
                 data = driver.execute_script("return JSON.stringify(searchResultsJson)")
                 json_object = json.loads(data)
-                print(json_object)
-                    
-                    
                 
-                    
-                    
-                    
+
                 for flight in json_object['flightViewData']:
                     dep_airport_name = flight['journeySummary']['departAirportName']
                     dep_airport_code = flight['journeySummary']['departAirportCode']
@@ -71,9 +58,13 @@ def tui_scrape(tui_dates):
                     stops = flight['journeySummary']['totalNumberOfStops']
                     available_seats = flight['journeySummary']['availableSeats']
                     flightNumber = flight['flightsectors'][0]['flightNumber']
+
+                    print(f"SCRAPING FOR DEPARTURE {dep_airport_name} TO {arr_airport_name} ON {dep_date} AT {dep_time}")
+
+
                         
                     with open(csv_file_path, mode='a', newline='') as file:
                         writer = csv.writer(file)
                         writer.writerow([dep_airport_name, dep_airport_code, arr_airport_name, arr_airport_code,dep_date + ' ' + dep_time, arr_date + ' ' + arr_time, flight_duration, stops, price, available_seats, flightNumber])
 
-#tuiScrape()            
+       
