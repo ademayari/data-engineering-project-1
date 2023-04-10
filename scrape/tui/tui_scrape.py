@@ -17,7 +17,7 @@ def tui_scrape(tui_dates):
 
 
     csv_headers = ["Departure Airport Name","Departure Airport Code","Arrival Airport Name","Arrival Airport Code","DepartureTime","ArrivalTime","Flight_duration","TotalStops","Price","AvailableSeats","FlightNumber"]
-    csv_file_path = f'TUI_flight_data_{datenow}.csv'
+    csv_file_path = f'/home/vicuser/data-engineering-project-1/data_collection/tui_data/TUI_flight_data_{datenow}.csv'
 
     if not os.path.exists(csv_file_path):
         with open(csv_file_path, mode='w', newline='') as file:
