@@ -12,6 +12,8 @@ lxml = "*"
 termcolor = "*"
 pillow = "*"
 selenium-screenshot = "*"
+mysql_connector = "*"
+
 
 [dev-packages]
 
