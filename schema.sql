@@ -1,7 +1,4 @@
-﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
-
-
+﻿-- Creating tables
 CREATE TABLE `Airport` (
     `code` string  NOT NULL ,
     `name` string  NOT NULL ,
@@ -46,6 +43,7 @@ CREATE TABLE `Airline` (
     )
 );
 
+-- Adding more constraints..
 ALTER TABLE `Flight` ADD CONSTRAINT `fk_Flight_airline_code` FOREIGN KEY(`airline_code`)
 REFERENCES `Airline` (`code`);
 
