@@ -74,7 +74,7 @@ VALUES
     ('IBZ', 'Ibiza Airport', 'Spain'),
     ('AGP', 'Málaga Airport', 'Spain'),
     ('PMI', 'Palma de Mallorca Airport', 'Spain'),
-    ('TCI', 'Tenerife–Ciudad de La Laguna Airport', 'Spain'),
+    ('TFS', 'Tenerife-Sud', 'Spain'),
     ('BDS', 'Brindisi – Salento Airport', 'Italy'),
     ('NAP', 'Naples International Airport', 'Italy'),
     ('PMO', 'Falcone–Borsellino Airport', 'Italy'),
