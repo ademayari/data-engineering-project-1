@@ -243,7 +243,7 @@
 
 
 
-				LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_19.csv'
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_19.csv'
 		INTO TABLE temp_tbl_2
 		FIELDS TERMINATED BY ','
 		LINES TERMINATED BY '\r\n'
