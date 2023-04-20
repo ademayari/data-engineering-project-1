@@ -1,5 +1,4 @@
-﻿drop schema  airfares;
-create schema airfares;
+﻿create schema airfares;
 use airfares;
 
 create table airline
