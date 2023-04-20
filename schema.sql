@@ -1,58 +1,54 @@
-﻿-- Creating tables
-CREATE TABLE `Airport` (
-    `code` string  NOT NULL ,
-    `name` string  NOT NULL ,
-    `country` string  NOT NULL ,
-    PRIMARY KEY (
-        `code`
-    ),
-    CONSTRAINT `uc_Airport_name` UNIQUE (
-        `name`
-    )
+﻿create table airline
+(
+    code    varchar(20) not null
+        primary key,
+    name    varchar(50) null,
+    country varchar(20) null
 );
 
-CREATE TABLE `Flight` (
-    `flight_id` string  NOT NULL ,
-    `airline_code` string  NOT NULL ,
-    `departure` string  NOT NULL DEFAULT bru,
-    `destination` string  NOT NULL ,
-    `departure_time` datetime  NOT NULL ,
-    `arrival_time` datetime  NOT NULL ,
-    `stops` int  NOT NULL ,
-    PRIMARY KEY (
-        `flight_id`
-    )
+create table airport
+(
+    code    varchar(20) not null
+        primary key,
+    name    varchar(50) null,
+    country varchar(20) null
 );
 
-CREATE TABLE `Flight_data` (
-    `flight_id` string  NOT NULL ,
-    `time_of_data` datetime  NOT NULL ,
-    `price` float  NOT NULL ,
-    `seats_left` int  NOT NULL ,
-    PRIMARY KEY (
-        `flight_id`,`time_of_data`
-    )
+create table flight
+(
+    flight_id      varchar(20)               not null
+        primary key,
+    airline_code   varchar(20)               null,
+    departure      varchar(20) default 'BRU' null,
+    destination    varchar(20)               null,
+    departure_time date                      null,
+    arrival_time   date                      null,
+    stops          int                       null,
+    constraint flight_ibfk_1
+        foreign key (airline_code) references airline (code),
+    constraint flight_ibfk_2
+        foreign key (departure) references airport (code),
+    constraint flight_ibfk_3
+        foreign key (destination) references airport (code)
 );
 
-CREATE TABLE `Airline` (
-    `code` string  NOT NULL ,
-    `name` string  NOT NULL ,
-    `country` string  NOT NULL ,
-    PRIMARY KEY (
-        `code`
-    )
+create index airline_code
+    on flight (airline_code);
+
+create index departure
+    on flight (departure);
+
+create index destination
+    on flight (destination);
+
+create table flight_data
+(
+    flight_id    varchar(20) not null,
+    time_of_data date        not null,
+    price        float       null,
+    seats_left   int         null,
+    primary key (flight_id, time_of_data),
+    constraint flight_data_ibfk_1
+        foreign key (flight_id) references flight (flight_id)
 );
-
--- Adding more constraints..
-ALTER TABLE `Flight` ADD CONSTRAINT `fk_Flight_airline_code` FOREIGN KEY(`airline_code`)
-REFERENCES `Airline` (`code`);
-
-ALTER TABLE `Flight` ADD CONSTRAINT `fk_Flight_departure` FOREIGN KEY(`departure`)
-REFERENCES `Airport` (`code`);
-
-ALTER TABLE `Flight` ADD CONSTRAINT `fk_Flight_destination` FOREIGN KEY(`destination`)
-REFERENCES `Airport` (`code`);
-
-ALTER TABLE `Flight_data` ADD CONSTRAINT `fk_Flight_data_flight_id` FOREIGN KEY(`flight_id`)
-REFERENCES `Flight` (`flight_id`);
 
