@@ -4,4 +4,4 @@ __pycache__
 .vscode/
 dates_to_scrape/
 .DS_Store
-.rpm
+google-chrome-stable_current_x86_64.rpm
