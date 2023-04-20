@@ -4,3 +4,4 @@ __pycache__
 .vscode/
 dates_to_scrape/
 .DS_Store
+airfare_data/
