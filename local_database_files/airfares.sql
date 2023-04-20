@@ -1,4 +1,8 @@
-﻿create table airline
+﻿drop schema  airfares;
+create schema airfares;
+use airfares;
+
+create table airline
 (
     code    varchar(50) not null
         primary key,
@@ -27,6 +31,7 @@ create table flight
     arrival_time   time                      not null,
     duration        time                    not null,
     stops          int                       null,
+    flightnumber    varchar(20)                 not null,
     constraint flight_ibfk_1
         foreign key (airline_code) references airline (code),
     constraint flight_ibfk_2
