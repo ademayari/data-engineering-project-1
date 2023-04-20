@@ -7,7 +7,7 @@ import os
 
 try:
     # autocommit is zéér belangrijk.
-    conn = mysql.connect(host='localhost', database='airfares', user='root', password='root', autocommit=True)    
+    conn = mysql.connect(host='127.0.0.1', database='database_EP1', user='root', password='admin', autocommit=True)    
     if conn.is_connected():
         # choose a specific start_date    
         start_date = date(2023, 4, 6)
@@ -18,7 +18,7 @@ try:
             date_format = start_date.strftime("%Y_%m_%d")
 
             # for each date and for each airline check if the file exists and copy the file to C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\
-            for airline in ('Ryanair', 'Tui', 'Transavia', 'BA'):
+            for airline in ('All'):
                 old_path = "C:\\Users\\svre257\\OneDrive - Hogeschool Gent\\Documenten\\Lesgeven Voorjaar 2023\\Data Engineering Project I\\Scrape\\" + airline + "_" + date_format + ".csv" 
                 new_path = "C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\" + airline + ".csv"
                 # Remove file if it already exists
