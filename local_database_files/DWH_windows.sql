@@ -3,7 +3,7 @@ CREATE DATABASE AirFaresDWH;
 USE AirFaresDWH;
 
 CREATE TABLE DimDate (
-  date_key INT PRIMARY KEY AUTO_INCREMENT,
+  date_key INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   date_current DATE NOT NULL,
   date_full VARCHAR(30) NOT NULL,
   day_Of_month INT NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE DimDate (
 
 
 CREATE TABLE DimFlight (
-    flight_key INT PRIMARY KEY,
+    flight_key INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     flight_id INT NOT NULL,
     flightnumber VARCHAR(10),
     departure_time TIME,
@@ -41,7 +41,7 @@ CREATE TABLE DimFlight (
 
 
 CREATE TABLE DimAirline (
-    airline_key INT PRIMARY KEY NOT NULL,
+    airline_key INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     airline_code VARCHAR(2),
     airline_name VARCHAR(255),
     country VARCHAR(255)
@@ -49,14 +49,14 @@ CREATE TABLE DimAirline (
 
 
 CREATE TABLE DimAirport (
-    airport_key INT PRIMARY KEY NOT NULL,
+    airport_key INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     airport_code VARCHAR(10) NOT NULL,
     airport_name VARCHAR(255) NOT NULL,
     country VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE FactFlightData (
-  fact_flight_key INT NOT NULL,
+  fact_flight_key INT AUTO_INCREMENT NOT NULL,
   arrival_date_key INT NOT NULL,
   departure_date_key INT NOT NULL,
   scrape_date_key INT NOT NULL,
