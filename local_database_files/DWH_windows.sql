@@ -1,4 +1,4 @@
-
+CREATE DATABASE AirFaresDWH;
 
 USE AirFaresDWH;
 
