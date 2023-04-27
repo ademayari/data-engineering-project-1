@@ -1,9 +1,9 @@
-CREATE DATABASE AirFaresDWH;
+
 
 USE AirFaresDWH;
 
 CREATE TABLE DimDate (
-  date_key INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  date_key INT NOT NULL,
   date_current DATE NOT NULL,
   date_full VARCHAR(30) NOT NULL,
   day_Of_month INT NOT NULL,
@@ -25,8 +25,13 @@ CREATE TABLE DimDate (
   year_current INT NOT NULL,
   year_name VARCHAR(4) NOT NULL,
   month_year VARCHAR(6) NOT NULL,
-  mmyyyyy VARCHAR(6) NOT NULL
+  mmyyyyy VARCHAR(6) NOT NULL,
+  INDEX idx_date_current (date_current)
 );
+ALTER TABLE DimDate 
+  MODIFY COLUMN date_key INT GENERATED ALWAYS AS (CONCAT(YEAR(date_current), LPAD(MONTH(date_current), 2, '0'), LPAD(DAY(date_current), 2, '0'))) STORED,
+  ADD PRIMARY KEY (date_key);
+
 
 
 CREATE TABLE DimFlight (
