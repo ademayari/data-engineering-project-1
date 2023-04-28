@@ -1,5 +1,5 @@
 
-#*.csv
+*.csv
 __pycache__
 .vscode/
 dates_to_scrape/
