@@ -34,7 +34,7 @@ CREATE TABLE DimDate (
 
 CREATE TABLE DimFlight (
     flight_key INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    flight_id INT NOT NULL,
+    flight_id VARCHAR(100) NOT NULL,
     flightnumber VARCHAR(10),
     departure_time TIME,
     arrival_time TIME,
