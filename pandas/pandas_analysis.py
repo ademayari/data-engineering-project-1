@@ -19,4 +19,4 @@ def load_all_csv():
     
     concatenated_dataframe = pd.concat(dataframes, ignore_index=True)
     
-    return concatenated_dataframe
+    return concatenated_dataframe.drop_duplicates()
