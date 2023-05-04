@@ -172,6 +172,67 @@
 		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
 
 
+        LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_27.csv'
+		INTO TABLE temp_tbl
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, flightnumber=@flightnumber, departure_date=@departure_date, arrival_date=@arrival_date, departure_time=@departure_time, arrival_time=@arrival_time, duration=@duration, stops=@number_of_stops,
+		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
+
+
+        LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_28.csv'
+		INTO TABLE temp_tbl
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, flightnumber=@flightnumber, departure_date=@departure_date, arrival_date=@arrival_date, departure_time=@departure_time, arrival_time=@arrival_time, duration=@duration, stops=@number_of_stops,
+		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
+
+        LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_29.csv'
+		INTO TABLE temp_tbl
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, flightnumber=@flightnumber, departure_date=@departure_date, arrival_date=@arrival_date, departure_time=@departure_time, arrival_time=@arrival_time, duration=@duration, stops=@number_of_stops,
+		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
+
+        LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_30.csv'
+		INTO TABLE temp_tbl
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, flightnumber=@flightnumber, departure_date=@departure_date, arrival_date=@arrival_date, departure_time=@departure_time, arrival_time=@arrival_time, duration=@duration, stops=@number_of_stops,
+		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
+
+
+        LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_05_01.csv'
+		INTO TABLE temp_tbl
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, flightnumber=@flightnumber, departure_date=@departure_date, arrival_date=@arrival_date, departure_time=@departure_time, arrival_time=@arrival_time, duration=@duration, stops=@number_of_stops,
+		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
+
+
+        LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_05_02.csv'
+		INTO TABLE temp_tbl
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, flightnumber=@flightnumber, departure_date=@departure_date, arrival_date=@arrival_date, departure_time=@departure_time, arrival_time=@arrival_time, duration=@duration, stops=@number_of_stops,
+		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
+
+
+        LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_05_03.csv'
+		INTO TABLE temp_tbl
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, flightnumber=@flightnumber, departure_date=@departure_date, arrival_date=@arrival_date, departure_time=@departure_time, arrival_time=@arrival_time, duration=@duration, stops=@number_of_stops,
+		airline_code=@airline_iata_code, departure=@departure_airport_iata_code, destination=@arrival_airport_iata_code;
+
+
    
         
         -- Merge de nieuwe data met de al bestaande data
@@ -336,6 +397,61 @@
 		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
 
 		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_26.csv'
+		INTO TABLE temp_tbl_2
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\r\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
+
+
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_27.csv'
+		INTO TABLE temp_tbl_2
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\r\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
+
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_28.csv'
+		INTO TABLE temp_tbl_2
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\r\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
+
+
+
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_29.csv'
+		INTO TABLE temp_tbl_2
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\r\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
+
+
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_04_30.csv'
+		INTO TABLE temp_tbl_2
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\r\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
+
+
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_05_01.csv'
+		INTO TABLE temp_tbl_2
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\r\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
+
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_05_02.csv'
+		INTO TABLE temp_tbl_2
+		FIELDS TERMINATED BY ','
+		LINES TERMINATED BY '\r\n'
+		(@flight_id, @flightnumber, @departure_date, @arrival_date, @departure_time, @arrival_time, @duration, @number_of_stops, @airline_iata_code, @departure_airport_iata_code, @arrival_airport_iata_code, @scrape_date, @available_seats, @price)
+		SET flight_id=@flight_id, scrape_date=@scrape_date, available_seats=@available_seats, price=@price;
+
+
+		LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\All_2023_05_03.csv'
 		INTO TABLE temp_tbl_2
 		FIELDS TERMINATED BY ','
 		LINES TERMINATED BY '\r\n'
