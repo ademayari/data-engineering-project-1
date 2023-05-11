@@ -3,6 +3,13 @@ import os
 
 CSV_PATH = '../clean_data_all'
 
+IATA_TO_NAME = {
+    'FR': 'Ryanair',
+    'TB': 'Tui fly',
+    'HV': 'Transavia',
+    'SN': 'Brussels Airlines',
+}
+ 
 def load_all_csv():
     all_files = os.listdir(CSV_PATH)
     csv_files = [file for file in all_files if file.endswith('.csv')]
@@ -20,3 +27,4 @@ def load_all_csv():
     concatenated_dataframe = pd.concat(dataframes, ignore_index=True)
     
     return concatenated_dataframe.drop_duplicates()
+
