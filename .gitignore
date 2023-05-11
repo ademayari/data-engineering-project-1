@@ -5,3 +5,4 @@ __pycache__
 dates_to_scrape/
 .DS_Store
 airfare_data/
+pandas/pandas-venv/*
